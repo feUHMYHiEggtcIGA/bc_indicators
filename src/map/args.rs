@@ -7,9 +7,9 @@ use bc_utils_lg::structs::settings::SETTINGS_IND;
 #[allow(clippy::missing_panics_doc)]
 #[allow(clippy::ptr_arg)]
 #[must_use]
-pub fn map_args_ind<T>(
-    settings: &'static MAP_LINK<String, SETTINGS_IND>
-) -> MAP_ARGS<'static, T>
+pub fn map_args_ind<'a, T>(
+    settings: &'a MAP_LINK<String, SETTINGS_IND>
+) -> MAP_ARGS<'a, T>
 where  
     T: Float,
 {

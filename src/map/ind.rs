@@ -17,7 +17,7 @@ use crate::ind::{
 
 
 #[must_use]
-pub fn map_ind_t_bf<T>() -> MAP_IND_T_BF<T>
+pub fn map_ind_t_bf<'a, T>() -> MAP_IND_T_BF<'a, T>
 where 
     T: Float,
     T: Sum,
@@ -35,7 +35,7 @@ where
 }
 
 #[must_use]
-pub fn map_ind_t<T>() -> MAP_IND_T<T> 
+pub fn map_ind_t<'a, T>() -> MAP_IND_T<'a, T> 
 where 
     T: Float,
     T: Sum,
@@ -55,7 +55,7 @@ where
 }
 
 #[must_use]
-pub fn map_ind_coll<C, T>() -> MAP_IND_COLL<C, T>
+pub fn map_ind_coll<'a, C, T>() -> MAP_IND_COLL<'a, C, T>
 where 
     T: Float,
     T: Sum,

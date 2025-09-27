@@ -5,7 +5,7 @@ use bc_utils_lg::types::maps::*;
 use bc_utils_lg::types::structures::ARGS;
 use rustc_hash::FxHashMap;
 
-pub fn map_func_window_func_bf<T>() -> MAP_FUNC_USIZE<T> 
+pub fn map_func_window_func_bf<'a, T>() -> MAP_FUNC_USIZE<'a, T> 
 where 
     T: Float,
 {
