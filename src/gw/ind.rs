@@ -16,13 +16,13 @@ use bc_utils_lg::structs::settings::SETTINGS_IND;
 #[allow(clippy::implicit_hasher)]
 #[allow(clippy::ptr_arg)]
 #[allow(clippy::too_many_arguments)]
-pub fn gw_ind_bf<T>(
+pub fn gw_ind_bf<'a, T>(
     buff_src: &SRC_TRANSPOSE<T>,
-    settings: &'static MAP_LINK<String, SETTINGS_IND>,
+    settings: &'a MAP_LINK<String, SETTINGS_IND>,
     map_ind_bf_: &MAP_IND_T_BF<T>,
     map_args_ind_bf_: &MAP_ARGS<T>,
     map_bf_ind: &mut MAP_BF_VEC<T>,
-) -> MAP<&'static str, T>
+) -> MAP<&'a str, T>
 where 
     T: Float,
     T: Sum,
