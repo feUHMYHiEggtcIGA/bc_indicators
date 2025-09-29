@@ -18,7 +18,7 @@ where
 }
 
 pub fn percent_abstr<T, V>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     _: &ARGS<T>,
 ) -> T 
 where
@@ -30,8 +30,8 @@ where
 }
 
 pub fn percent_coll<C, T, V>(
-    src1: &SRC_ARG<T>,
-    src2: &SRC_ARG<T>,
+    src1: &SLICE_ARG<T>,
+    src2: &SLICE_ARG<T>,
 ) -> C
 where
     T: Float,
@@ -47,7 +47,7 @@ where
 }
 
 pub fn percent_coll_abstr<C, T, V>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     _: &ARGS<T>,
 ) -> C
 where 

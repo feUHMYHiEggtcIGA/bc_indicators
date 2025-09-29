@@ -1,10 +1,10 @@
 use num_traits::Float;
-use bc_utils_lg::types::structures::{ARGS, SRC_ARG, SRCS_ARG, BF_VEC};
+use bc_utils_lg::types::structures::{ARGS, SLICE_ARG, SLICE1_ARG, BF_VEC};
 use bc_utils::nums::avg;
 
 
 pub fn avg_bf_abstr<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
     _: &mut BF_VEC<T>,
 ) -> T
@@ -17,7 +17,7 @@ where
 
 #[allow(clippy::missing_panics_doc)]
 pub fn avg_coll<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
 ) -> C
 where 
     T: Float,
@@ -40,7 +40,7 @@ where
 }
 
 pub fn avg_coll_abstr<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     _: &ARGS<T>,
 ) -> C
 where 
@@ -53,7 +53,7 @@ where
 }
 
 pub fn avg_f_abstr<T>(
-    src: &SRCS_ARG<T>, 
+    src: &SLICE1_ARG<T>, 
     _: &ARGS<T>
 ) -> T
 where 

@@ -2,7 +2,7 @@ use std::borrow::Borrow;
 
 use num_traits::Float;
 use bc_utils_lg::types::maps::MAP;
-use bc_utils_lg::types::structures::{ARGS, BF_VEC, SRCS_ARG, SRC_ARG};
+use bc_utils_lg::types::structures::{ARGS, BF_VEC, SLICE_ARG, SLICE1_ARG};
 
 use crate::bf::nohesi::bf_nohesi;
 
@@ -45,7 +45,7 @@ where
 #[allow(clippy::ptr_arg)]
 #[allow(clippy::pedantic)]
 pub fn nohesi_bf_abstr<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     args: &ARGS<T>, 
     bf: &mut BF_VEC<T>,
 ) -> T 
@@ -66,7 +66,7 @@ where
 }
 
 pub fn nohesi_f<T>(
-    v: &SRC_ARG<T>,
+    v: &SLICE_ARG<T>,
     hesi: &T,
 ) -> T
 where 
@@ -76,7 +76,7 @@ where
 }
 
 pub fn nohesi_f_abstr<T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> T
 where 
@@ -86,7 +86,7 @@ where
 }
 
 pub fn nohesi_coll<C, T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     hesi: &T,
 ) -> C
 where
@@ -102,7 +102,7 @@ where
 }
 
 pub fn nohesi_coll_abstr<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> C
 where

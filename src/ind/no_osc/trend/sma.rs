@@ -34,7 +34,7 @@ where
 
 #[allow(clippy::ptr_arg)]
 pub fn sma_bf_abstr<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     args: &ARGS<T>, 
     bf: &mut BF_VEC<T>
 ) -> T
@@ -50,7 +50,7 @@ where
 }
 
 pub fn sma_f<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     window: &usize,
 ) -> T 
 where 
@@ -61,7 +61,7 @@ where
 }
 
 pub fn sma_f_abstr<T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> T
 where 
@@ -72,7 +72,7 @@ where
 }
 
 pub fn sma_coll<C, T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     window: &usize,
 ) -> C 
 where 
@@ -100,7 +100,7 @@ where
 }
 
 pub fn sma_coll_abstr<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> C 
 where

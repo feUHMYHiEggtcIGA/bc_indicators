@@ -11,7 +11,7 @@ use crate::bf::rma::bf_rma;
 #[allow(clippy::implicit_hasher)]
 #[allow(clippy::type_complexity)]
 pub fn bf_rsi<'a, T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     window: &usize,
     exc_last: &bool,
 ) -> (
@@ -57,7 +57,7 @@ where
 }
 
 pub fn bf_rsi_abstr<T, V>(
-    src: &SRCS_ARG<V>,
+    src: &SLICE1_ARG<V>,
     args: &ARGS<T>,
     exc_last: &bool,
 ) -> BF_VEC<T>

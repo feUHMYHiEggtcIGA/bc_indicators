@@ -3,7 +3,7 @@ use bc_utils_lg::statics::prices::{
     OPEN,
     HIGH,
     LOW,
-    SRCS
+    SRC_TRANSPOSE
 };
 
 use bc_indicators::map::ind::map_ind_coll;
@@ -27,7 +27,7 @@ fn src_from_settings_res_1(){
                 &SETTINGS_IND_TEST["src_1"].used_ind, 
                 &SETTINGS_IND_TEST["src_1"].used_src, 
                 &SETTINGS_IND_TEST, 
-                &SRCS, 
+                &SRC_TRANSPOSE, 
                 &map_ind_coll_, 
                 &map_args_,
             )

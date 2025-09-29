@@ -26,7 +26,7 @@ where
 }
 
 pub fn trend_ma_bf_abstr<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
     bf: & mut BF_VEC<T>
 ) -> T
@@ -37,7 +37,7 @@ where
 }
 
 pub fn trend_ma_coll<C, T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
 ) -> C
 where 
     T: Float,
@@ -52,7 +52,7 @@ where
 }
 
 pub fn trend_ma_coll_abstr<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     _: &ARGS<T>,
 ) -> C
 where 
@@ -63,7 +63,7 @@ where
 }
 
 pub fn trend_ma_f_abstr<T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     _: &ARGS<T>,
 ) -> T
 where 

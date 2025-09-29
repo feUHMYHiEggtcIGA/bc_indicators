@@ -8,7 +8,7 @@ pub fn src_from_settings<T>(
     used_ind: &Vec<String>,
     used_src: &Vec<SETTINGS_USED_SRC>,
     settings: &'static MAP_LINK<String, SETTINGS_IND>,
-    src: &SRCS<T>,
+    src: &SRC_TRANSPOSE<T>,
     map_ind_coll_: &MAP_IND_COLL<Vec<T>, T>,
     map_args_ind_bf_: &MAP_ARGS<T>,
 ) -> Vec<Vec<T>>

@@ -47,7 +47,7 @@ where
 
 #[allow(clippy::needless_borrows_for_generic_args)]
 pub fn ema_bf_abstr<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
     bf: &mut BF_VEC<T>
 ) -> T 
@@ -62,7 +62,7 @@ where
 
 #[allow(clippy::missing_panics_doc)]
 pub fn ema_f<'a, T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     window: &usize,
 ) -> T
 where 
@@ -79,7 +79,7 @@ where
 }
 
 pub fn ema_f_abstr<T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> T
 where 
@@ -95,7 +95,7 @@ where
 }
 
 pub fn ema_coll<C, T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     window: &usize,
 ) -> C 
 where 
@@ -120,7 +120,7 @@ where
 }
 
 pub fn ema_coll_abstr<C, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> C 
 where

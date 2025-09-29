@@ -8,7 +8,7 @@ use bc_utils_lg::statics::prices::{
     HIGH, 
     LOW,
     OPEN,
-    SRCS,
+    SRC_TRANSPOSE,
 };
 
 use bc_indicators::gw::bf::gw_func_bf_ind;
@@ -25,7 +25,7 @@ fn gw_ind_bf_res_sett_rsi_empty_1() {
     let map_ind_coll_ = map_ind_coll();
     let map_args_ = map_args_ind(&SETTINGS_RSI_EMPTY);
     let mut bf = gw_func_bf_ind(
-        &SRCS,
+        &SRC_TRANSPOSE,
         &SETTINGS_RSI_EMPTY,
         &map_func_bf_ind_, 
         &map_ind_coll_, 
@@ -35,7 +35,7 @@ fn gw_ind_bf_res_sett_rsi_empty_1() {
     let map_ind_bf_ = map_ind_t_bf();
     assert_eq!(
         gw_ind_bf(
-            &SRCS, 
+            &SRC_TRANSPOSE, 
             &SETTINGS_RSI_EMPTY, 
             &map_ind_bf_,
             &map_args_, 
@@ -51,7 +51,7 @@ fn gw_ind_bf_res_sett_test_1() {
     let map_ind_coll_ = map_ind_coll();
     let map_args_ = map_args_ind(&SETTINGS_IND_TEST);
     let mut bf = gw_func_bf_ind(
-        &SRCS,
+        &SRC_TRANSPOSE,
         &SETTINGS_IND_TEST,
         &map_func_bf_ind_, 
         &map_ind_coll_, 
@@ -68,7 +68,7 @@ fn gw_ind_bf_res_sett_test_1() {
     let map_ind_bf_ = map_ind_t_bf();
     assert!(
         (gw_ind_bf(
-            &SRCS, 
+            &SRC_TRANSPOSE, 
             &SETTINGS_IND_TEST, 
             &map_ind_bf_,
             &map_args_, 

@@ -6,7 +6,7 @@ use bc_utils_lg::types::structures::*;
 
 
 pub fn profit_factor<'a, T, V>(
-    pnl_qty: &SRC_ARG<V>,
+    pnl_qty: &SLICE_ARG<V>,
 ) -> T
 where 
     T: Float,
@@ -35,7 +35,7 @@ where
 }
 
 pub fn profit_factor_abstr<'a, T, V>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
 ) -> T
 where 
     T: Float,
@@ -47,7 +47,7 @@ where
 }
 
 pub fn profit_factor_coll<'a, C, T, V>(
-    src: &SRCS_ARG<V>,
+    src: &SLICE1_ARG<V>,
 ) -> C
 where 
     T: Float,
@@ -63,7 +63,7 @@ where
 }
 
 pub fn profit_factor_coll_abstr<'a, C, T, V>(
-    src: &SRCS1_ARG<V>,
+    src: &SLICE2_ARG<V>,
 ) -> C
 where 
     T: Float,

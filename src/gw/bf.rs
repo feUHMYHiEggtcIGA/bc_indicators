@@ -16,7 +16,7 @@ use crate::gw::src::*;
 #[allow(clippy::ptr_arg)]
 #[must_use]
 pub fn gw_func_bf_ind<'a, T>(
-    src: &SRCS<T>,
+    src: &SRC_TRANSPOSE<T>,
     settings: &'static MAP_LINK<String, SETTINGS_IND>,
     map_bf_ind_abstr_: &'a MAP_FUNC_BF_IND<T>,
     map_ind_coll_: &MAP_IND_COLL<Vec<T>, T>,

@@ -8,7 +8,7 @@ use bc_utils::other;
 
 
 pub fn bf_sma<T>(
-    src: &SRC_ARG<T>,
+    src: &SLICE_ARG<T>,
     window: &usize,
     exc_last: &bool,
 ) -> FxHashMap<&'static str, Vec<T>>
@@ -34,7 +34,7 @@ where
 }
 
 pub fn bf_sma_abstr<'a, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
     exc_last: &bool,
 ) -> BF_VEC<T>

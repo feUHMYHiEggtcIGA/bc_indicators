@@ -9,7 +9,7 @@ use crate::ind::no_osc::trend::rma::*;
 
 #[allow(clippy::missing_panics_doc)]
 pub fn bf_rma<'a, T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     window: &usize,
     exc_last: &bool,
 ) -> FxHashMap<&'static str, T>
@@ -53,7 +53,7 @@ where
 }
 
 pub fn bf_rma_abstr<'a, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
     exc_last: &bool,
 ) -> BF_VEC<T>

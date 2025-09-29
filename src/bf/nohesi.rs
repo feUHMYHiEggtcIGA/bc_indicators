@@ -8,7 +8,7 @@ use bc_utils_lg::enums::indicators::*;
 
 #[allow(clippy::pedantic)]
 pub fn bf_nohesi<T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     hesi: &T,
     exc_last: &bool,
 ) -> FxHashMap<&'static str, T>
@@ -52,7 +52,7 @@ where
 }
 
 pub fn bf_nohesi_abstr<'a, T>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
     exc_last: &bool
 ) -> BF_VEC<T>

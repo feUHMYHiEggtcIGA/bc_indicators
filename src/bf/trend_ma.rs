@@ -7,7 +7,7 @@ use num_traits::Float;
 
 
 pub fn bf_trend_ma<T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     exc_last: &bool,
 ) -> MAP<&'static str, T>
 where 
@@ -30,7 +30,7 @@ where
 }
 
 pub fn bf_trend_ma_abstr<T, V>(
-    src: &SRCS_ARG<V>,
+    src: &SLICE1_ARG<V>,
     _: &ARGS<T>,
     exc_last: &bool,
 ) -> BF_VEC<T>

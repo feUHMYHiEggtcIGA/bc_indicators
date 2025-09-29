@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 
 use num_traits::Float;
-use bc_utils_lg::types::structures::{ARGS, SRCS_ARG, SRC_ARG};
+use bc_utils_lg::types::structures::{ARGS, SLICE1_ARG, SLICE_ARG,};
 
 pub fn mult_diff<T, V>(
     v1: V,
@@ -23,7 +23,7 @@ where
 }
 
 pub fn mult_diff_abstr<T, V>(
-    src: &SRC_ARG<V>,
+    src: &SLICE_ARG<V>,
     args: &ARGS<T>,
 ) -> T
 where 
@@ -34,8 +34,8 @@ where
 }
 
 pub fn mult_diff_coll<C, T, V>(
-    src1: &SRC_ARG<V>,
-    src2: &SRC_ARG<V>,
+    src1: &SLICE_ARG<V>,
+    src2: &SLICE_ARG<V>,
     multiplier: &T,
 ) -> C
 where 
@@ -51,7 +51,7 @@ where
 }
 
 pub fn mult_diff_coll_abstr<C, T, V>(
-    src: &SRCS_ARG<T>,
+    src: &SLICE1_ARG<T>,
     args: &ARGS<T>
 ) -> C
 where 
