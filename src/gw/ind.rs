@@ -11,6 +11,8 @@ use bc_utils_lg::types::maps::*;
 use bc_utils_lg::types::structures::*;
 use bc_utils_lg::structs::settings::SETTINGS_IND;
 
+use crate::gw::bf::gw_func_bf_ind;
+
 
 #[allow(clippy::missing_panics_doc)]
 #[allow(clippy::implicit_hasher)]
@@ -63,4 +65,29 @@ where
                 map
             }
         )
+}
+
+pub fn gw_ind_coll<'a, T, C>(
+    src: SRC<T>,
+    settings: &'a MAP_LINK<String, SETTINGS_IND>,
+    map_ind: &MAP_IND_COLL<C, T>,
+    map_ind_coll: &MAP_IND_COLL<Vec<T>, T>,
+    map_args: &MAP_ARGS<T>,
+    map_func_bf: &MAP_FUNC_BF_IND<T>,
+) -> MAP<&'a str, C>
+where
+    T: Float,
+    T: Sum,
+    T: AddAssign,
+    T: DivAssign,
+    C: FromIterator<T>
+{
+    let mut bf_ = gw_func_bf_ind(
+        &src, 
+        settings, 
+        map_func_bf,
+        map_ind_coll, 
+        map_args,
+        &false,
+    );
 }

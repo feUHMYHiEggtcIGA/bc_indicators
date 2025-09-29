@@ -19,11 +19,11 @@ where
     ])
 }
 
-pub fn map_window_ind<T>(
+pub fn map_window_ind<'a, T>(
     map_func_window: &MAP_FUNC_USIZE<T>, 
-    settings: &'static MAP<String, SETTINGS_IND>,
+    settings: &'a MAP_LINK<String, SETTINGS_IND>,
     map_args: &MAP_ARGS<T>
-) -> FxHashMap<&'static str, usize>
+) -> FxHashMap<&'a str, usize>
 where 
     T: Float
 {

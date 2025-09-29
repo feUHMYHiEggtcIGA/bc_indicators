@@ -4,3 +4,4 @@ pub mod bf;
 pub mod ind;
 pub mod map;
 pub mod gw;
+pub mod other;
