@@ -95,9 +95,9 @@ where
 {
     let mut bf = bf_nohesi(&src[..3], hesi, &true);
     src
-        [2..]
         .iter()
-        .map(|v| nohesi_bf(v.borrow(), hesi, &mut bf))
+        .enumerate()
+        .map(|(i, v)| if i < 3 {T::nan()} else {nohesi_bf(v.borrow(), hesi, &mut bf)})
         .collect::<C>()
 }
 

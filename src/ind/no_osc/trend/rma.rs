@@ -95,16 +95,16 @@ where
     C: FromIterator<T>
 {
     let w = *window * 10;
-    let mut rm = bf_rma::<T, T>(&src[0..=w + 1], window, &true,);
+    let mut rm = bf_rma::<T, T>(&src[0..=w], window, &false,);
     src
-        [w..src.len()]
         .iter()
+        .enumerate()
         .map(
-            |v|
+            |(i, v)| if i < w {T::nan()} else {
             rma_bf(
                 v,
                 &mut rm
-            )
+            )}
         )
         .collect()
 }

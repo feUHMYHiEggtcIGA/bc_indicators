@@ -68,8 +68,10 @@ fn rsi_f_res_skip_1() {
 
 #[test]
 fn rsi_coll_res_1() {
+    let c = rsi_coll::<Vec<f64>, _>(OPEN.as_slice(), &2);
     assert!(
-        (rsi_coll::<Vec<f64>, _>(OPEN.as_slice(), &2).last().unwrap() / 
+        (c.last().unwrap() / 
         &rsi_f(OPEN.as_slice(),  &2,) -1.0).abs() < 0.0001
     );
+    assert!(c.len() == OPEN.len());
 }

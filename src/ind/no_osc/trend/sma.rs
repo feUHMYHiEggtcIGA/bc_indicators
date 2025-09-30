@@ -81,20 +81,20 @@ where
     C: FromIterator<T>
 {
     let mut bf= bf_sma(
-        &src[..*window + 1], 
+        &src[..*window], 
         window, 
-        &true,
+        &false,
     );
     src
-        [*window..]
         .iter()
+        .enumerate()
         .map(
-            |v|
+            |(i, v)| if i < *window {T::nan()} else {
             sma_bf(
                 *v,
                 window,
                 &mut bf
-            )
+            )}
         )
         .collect()
 }

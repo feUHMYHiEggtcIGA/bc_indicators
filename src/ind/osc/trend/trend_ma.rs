@@ -45,9 +45,9 @@ where
 {
     let mut bf = bf_trend_ma(&src[..2], &false);
     src
-        [2..]
         .iter()
-        .map(|v| trend_ma_bf(v, &mut bf))
+        .enumerate()
+        .map(|(i, v)| if i < 2 {T::nan()} else {trend_ma_bf(v, &mut bf)})
         .collect()
 }
 

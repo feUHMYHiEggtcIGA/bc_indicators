@@ -105,16 +105,16 @@ where
     C: FromIterator<T>
 {
     let w = *window * 10;
-    let mut bf = bf_ema(&src[0..w], window, &false,);
+    let mut bf = bf_ema(&src[..w], window, &false,);
     src
-        [w..src.len()]
         .iter()
+        .enumerate()
         .map(
-            |v|
+            |(i, v)| if i < w {T::nan()} else {
             ema_bf(
                 v,
                 &mut bf
-            )
+            )}
         )
         .collect()
 }

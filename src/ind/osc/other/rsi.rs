@@ -127,9 +127,11 @@ where
         mut rma2,
     ) = bf_rsi(&src[..w + 1], window, &false);
     src
-        [w + 1..]
         .iter()
-        .map(|v| rsi_bf(v, &mut bf, &mut rma1, &mut rma2))
+        .enumerate()
+        .map(
+            |(i, v)| if i < w+1 {T::nan()} else {rsi_bf(v, &mut bf, &mut rma1, &mut rma2)}
+        )
         .collect()
 }
 
