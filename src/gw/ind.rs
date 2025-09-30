@@ -5,13 +5,14 @@ use std::ops::{
 };
 use std::vec;
 
+use bc_utils_lg::funcs::src::transpose;
 use num_traits::Float;
 use bc_utils_lg::types::maps::{MAP, MAP_LINK};
 use bc_utils_lg::types::maps::*;
 use bc_utils_lg::types::structures::*;
 use bc_utils_lg::structs::settings::SETTINGS_IND;
 
-use crate::gw::bf::gw_func_bf_ind;
+use crate::gw::src::src_from_settings;
 
 
 #[allow(clippy::missing_panics_doc)]
@@ -68,12 +69,11 @@ where
 }
 
 pub fn gw_ind_coll<'a, T, C>(
-    src: SRC<T>,
+    src: &SRC<T>,
     settings: &'a MAP_LINK<String, SETTINGS_IND>,
-    map_ind: &MAP_IND_COLL<C, T>,
-    map_ind_coll: &MAP_IND_COLL<Vec<T>, T>,
+    map_ind_coll: &MAP_IND_COLL<C, T>,
+    map_ind_vec: &MAP_IND_COLL<Vec<T>, T>,
     map_args: &MAP_ARGS<T>,
-    map_func_bf: &MAP_FUNC_BF_IND<T>,
 ) -> MAP<&'a str, C>
 where
     T: Float,
@@ -82,12 +82,29 @@ where
     T: DivAssign,
     C: FromIterator<T>
 {
-    let mut bf_ = gw_func_bf_ind(
-        &src, 
-        settings, 
-        map_func_bf,
-        map_ind_coll, 
-        map_args,
-        &false,
-    );
+    let src_tr = transpose(src.clone()).unwrap();
+    settings
+        .into_iter()
+        .map(
+            |(k, v)| 
+            (
+                k.as_str(),
+                map_ind_coll[v.key.as_str()](
+                    src_from_settings(
+                        &v.used_ind, 
+                        &v.used_src, 
+                        settings, 
+                        &src_tr,
+                        map_ind_vec,
+                        map_args,
+                    )
+                        .iter()
+                        .map(|vecc| vecc.as_slice())
+                        .collect::<Vec<_>>()
+                        .as_slice(),
+                    &map_args[k.as_str()]
+                )
+            )
+        )
+        .collect()
 }

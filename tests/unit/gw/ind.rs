@@ -1,14 +1,12 @@
 use bc_indicators::ind::no_osc::other::avg::avg_coll;
 use bc_utils::nums::avg;
+use bc_utils_lg::funcs::settings::settings_from_json;
 use bc_utils_lg::statics::settings::{
     SETTINGS_RSI_EMPTY, 
     SETTINGS_IND_TEST,
 };
 use bc_utils_lg::statics::prices::{
-    HIGH, 
-    LOW,
-    OPEN,
-    SRC_TRANSPOSE,
+    HIGH, LOW, OPEN, SRC, SRC_TRANSPOSE
 };
 
 use bc_indicators::gw::bf::gw_func_bf_ind;
@@ -68,7 +66,7 @@ fn gw_ind_bf_res_sett_test_1() {
     let map_ind_bf_ = map_ind_t_bf();
     assert!(
         (gw_ind_bf(
-            &SRC_TRANSPOSE, 
+            &SRC_TRANSPOSE,
             &SETTINGS_IND_TEST, 
             &map_ind_bf_,
             &map_args_, 
@@ -76,4 +74,24 @@ fn gw_ind_bf_res_sett_test_1() {
         )["ind"] / 
         avg::<f64, _>(&[&OPEN[OPEN.len() - 2], &rsi_2]) - 1.0).abs() < 0.0001,
     );
+}
+
+#[test]
+fn gw_ind_coll_res_1()
+{
+    let map_ind_c = map_ind_coll::<Vec<f64>, f64>();
+    let map_args_ind = map_args_ind(&SETTINGS_RSI_EMPTY);
+    assert_eq!(
+        gw_ind_coll(
+            &SRC, 
+            &SETTINGS_RSI_EMPTY, 
+            &map_ind_c, 
+            &map_ind_c, 
+            &map_args_ind,
+        )["rsi_1"],
+        rsi_coll::<Vec<f64>, f64>(OPEN.as_slice(), &SETTINGS_RSI_EMPTY["rsi_1"].kwargs_usize["window"])
+
+    );
+    
+
 }
