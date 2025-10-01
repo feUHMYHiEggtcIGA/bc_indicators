@@ -88,8 +88,8 @@ fn gw_ind_coll_res_1()
         &map_args_ind,
     )["rsi_1"].clone();
     let res_sett = rsi_coll::<Vec<f64>, f64>(OPEN.as_slice(), &SETTINGS_RSI_EMPTY["rsi_1"].kwargs_usize["window"]);
-    assert!(res_gw.len() == OPEN.len());
-    assert!(res_gw.len() == res_sett.len()); 
+    assert_eq!(res_gw.len(), OPEN.len());
+    assert_eq!(res_gw.len(), res_sett.len()); 
     assert!(res_gw.iter().zip(res_sett.iter()).any(|v| v.0 != v.1));
     assert_eq!(
        res_gw.into_iter().filter(|v| !v.is_nan()).collect::<Vec<f64>>(),
