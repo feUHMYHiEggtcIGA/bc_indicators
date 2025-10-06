@@ -14,7 +14,7 @@ use crate::ind::{
     osc::other::rsi::{rsi_bf_abstr, rsi_f_abstr, rsi_coll_abstr},
     osc::trend::trend_ma::{trend_ma_bf_abstr, trend_ma_coll_abstr, trend_ma_f_abstr},
     osc::other::time::{time_frsrc_coll_abstr, time_frsrc_bf_abstr},
-    osc::math::mm_scaler::{mm_scaller_bf_abstr, mm_scaller_coll_abstr,},
+    osc::math::mm_scaler::{mm_scaler_bf_abstr, mm_scaler_coll_abstr,},
 };
 
 
@@ -34,7 +34,7 @@ where
         ("avg", avg_bf_abstr as IND_T_BF<T>),
         ("trend_ma", trend_ma_bf_abstr as IND_T_BF<T>),
         ("time_frsrc", time_frsrc_bf_abstr as IND_T_BF<T>),
-        ("mm_scaller", mm_scaller_bf_abstr as IND_T_BF<T>),
+        ("mm_scaler", mm_scaler_bf_abstr as IND_T_BF<T>),
     ])
 }
 
@@ -76,6 +76,6 @@ where
         ("avg", avg_coll_abstr as IND_COLL<C, T>),
         ("trend_ma", trend_ma_coll_abstr as IND_COLL<C, T>),
         ("time_frsrc", time_frsrc_coll_abstr as IND_COLL<C, T>),
-        ("mm_scaller", mm_scaller_coll_abstr as IND_COLL<C, T>)
+        ("mm_scaler", mm_scaler_coll_abstr as IND_COLL<C, T>)
     ])
 }

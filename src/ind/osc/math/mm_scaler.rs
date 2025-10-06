@@ -43,7 +43,7 @@ where
     mm_scaler(*src, minn, maxx)
 }
 
-pub fn mm_scaller_bf_abstr<T>(
+pub fn mm_scaler_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>,
     bf: &mut BF_VEC<T>,
@@ -54,7 +54,7 @@ where
     mm_scaler_bf(&src[0], bf[0].unwrap_vec_f())
 }
 
-pub fn mm_scaller_coll<T, C>(
+pub fn mm_scaler_coll<T, C>(
     src: &SLICE_ARG<T>,
     window: &usize,
 ) -> C
@@ -70,7 +70,7 @@ where
         .collect()
 }
 
-pub fn mm_scaller_coll_abstr<T, C>(
+pub fn mm_scaler_coll_abstr<T, C>(
     src: &SLICE1_ARG<T>,
     args: &ARGS<T>,
 ) -> C
@@ -78,5 +78,5 @@ where
     T: Float,
     C: FromIterator<T>,
 {
-    mm_scaller_coll::<T, C>(&src[0], args[0].unwrap_usize())
+    mm_scaler_coll::<T, C>(&src[0], args[0].unwrap_usize())
 }
