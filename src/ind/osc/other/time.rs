@@ -25,7 +25,7 @@ where
 pub fn time_frsrc_bf_abstr<T: Float>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>,
-    _:  &mut BF_VEC<T>,
+    _:  &mut [&mut BF_VEC<T>],
 ) -> T
 {
     time_frsrc(&src[0])

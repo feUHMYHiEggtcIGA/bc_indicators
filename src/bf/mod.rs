@@ -4,3 +4,4 @@ pub mod rma;
 pub mod rsi;
 pub mod trend_ma;
 pub mod nohesi;
+pub mod window;

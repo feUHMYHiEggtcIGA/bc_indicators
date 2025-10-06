@@ -40,6 +40,7 @@ where
             |mut map, setting, | {
                 let key_uniq_str = setting.0.as_str();
                 let mut src_arg = vec![];
+                let mut bf_arg = vec![];
                 for us_el in &setting
                     .1
                     .used_src
@@ -55,12 +56,22 @@ where
                 {
                     src_arg.push(map[ui_el.as_str()]);
                 }
+                 for bf_used_el in &setting
+                    .1
+                    .used_bf
+                {
+                    let rp = ;
+                    bf_arg.push(rp.get_mut(bf_used_el.as_str()).unwrap());
+
+                }
+                let rp = &mut *bfunsafe_map;
+                bf_arg.push(rp.get_mut(key_uniq_str).unwrap());
                 map.insert(
                     key_uniq_str,
                     map_ind_bf_[setting.1.key.as_str()](
                         src_arg.as_slice(),
                         &map_args_ind_bf_[key_uniq_str],
-                        map_bf_ind.get_mut(key_uniq_str).unwrap(),
+                        bf_arg.as_mut_slice(),
                     )
                 );
                 map

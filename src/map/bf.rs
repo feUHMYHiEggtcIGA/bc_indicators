@@ -15,6 +15,7 @@ use crate::bf::{
     rma::bf_rma_abstr,
     rsi::bf_rsi_abstr,
     nohesi::bf_nohesi_abstr,
+    window::bf_window_abstr,
 };
 
 
@@ -32,6 +33,7 @@ where
         ("nohesi", bf_nohesi_abstr as FUNC_BF_IND<T>),
         ("avg", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
         ("trend_ma", bf_trend_ma_abstr as FUNC_BF_IND<T>),
-        ("time_frsrc", fn_ind_bf_abstr_default as FUNC_BF_IND<T>)
+        ("time_frsrc", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
+        ("mm_scaler", bf_window_abstr as FUNC_BF_IND<T>),
     ])
 }

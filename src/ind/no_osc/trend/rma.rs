@@ -57,14 +57,14 @@ where
 pub fn rma_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
-    rm: & mut BF_VEC<T>
+    bf: &mut [&mut BF_VEC<T>]
 ) -> T 
 where 
     T: Float,
 {
     rma_bf(
         src.first().expect("first src not found"),
-        rm.first_mut().expect("rm rma not found").unwrap_f(),
+        bf[0].first_mut().expect("rm rma not found").unwrap_f(),
     )
 }
 

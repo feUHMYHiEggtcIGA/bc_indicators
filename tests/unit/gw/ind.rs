@@ -63,16 +63,18 @@ fn gw_ind_bf_res_sett_test_1() {
     let rsi_1 = rsi_coll::<Vec<f64>, _>(src_test.as_slice(), &SETTINGS_IND_TEST["rsi_1"].kwargs_usize["window"]);
     let rsi_2 =  rsi_f(rsi_1.as_slice(), &SETTINGS_IND_TEST["rsi_2"].kwargs_usize["window"]);
     let map_ind_bf_ = map_ind_t_bf();
+    let res = gw_ind_bf(
+        &SRC_TRANSPOSE,
+        &SETTINGS_IND_TEST, 
+        &map_ind_bf_,
+        &map_args_, 
+        &mut bf,
+    );
     assert!(
-        (gw_ind_bf(
-            &SRC_TRANSPOSE,
-            &SETTINGS_IND_TEST, 
-            &map_ind_bf_,
-            &map_args_, 
-            &mut bf,
-        )["ind"] / 
+        (res["ind"] / 
         avg::<f64, _>(&[&OPEN[OPEN.len() - 2], &rsi_2]) - 1.0).abs() < 0.0001,
     );
+    assert_eq(res["mm_scaler_1"], );
 }
 
 #[test]

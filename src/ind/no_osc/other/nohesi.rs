@@ -47,7 +47,7 @@ where
 pub fn nohesi_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     args: &ARGS<T>, 
-    bf: &mut BF_VEC<T>,
+    bf: &mut [&mut BF_VEC<T>],
 ) -> T 
 where 
     T: Float,
@@ -59,6 +59,7 @@ where
             .unwrap()
             .unwrap_f(),
         bf
+            [0]
             .first_mut()
             .unwrap()
             .unwrap_f()

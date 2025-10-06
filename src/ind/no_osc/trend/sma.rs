@@ -36,7 +36,7 @@ where
 pub fn sma_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     args: &ARGS<T>, 
-    bf: &mut BF_VEC<T>
+    bf: &mut [&mut BF_VEC<T>]
 ) -> T
 where 
     T: Float,
@@ -45,7 +45,7 @@ where
     sma_bf(
         *src.first().expect("first src not found"),
         args.first().expect("first arg not found").unwrap_usize(),
-        bf.first_mut().expect("bf sma not found").unwrap_vec_f(),
+        bf[0].first_mut().expect("bf sma not found").unwrap_vec_f(),
     )
 }
 
