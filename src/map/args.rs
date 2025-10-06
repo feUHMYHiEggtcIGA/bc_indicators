@@ -20,7 +20,7 @@ where
             (
                 setting.0.as_str(),
                 match setting.1.key.as_str() {
-                    "sma" | "rma" | "ema" | "rsi" | "mm_scaller" => vec![T_ARGS::<T>::Usize(setting.1.kwargs_usize["window"])],
+                    "sma" | "rma" | "ema" | "rsi" | "mm_scaler" => vec![T_ARGS::<T>::Usize(setting.1.kwargs_usize["window"])],
                     "nohesi" => vec![
                         T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["hesi"]).unwrap()),
                     ],
