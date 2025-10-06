@@ -11,15 +11,24 @@ use num_traits::Float;
 use crate::bf::window::bf_window;
 
 
+pub fn mm_scaler<T>(
+    src: T, 
+    minn: T, 
+    maxx: T,
+) -> T
+where 
+    T: Float
+{
+    (src - minn) / (maxx - minn)
+}
+
 pub fn mm_scaler_bf<T>(
     src: &T,
     bf: &mut MAP<&'static str, Vec<T>>,
 ) -> T
 where 
-    T: Float
+    T: Float,
 {
-    let max = *bf["window"].iter().max_by(|v, vv| v.partial_cmp(vv).unwrap()).unwrap();
-    let minn = *bf["window"].iter().min_by(|v, vv| v.partial_cmp(vv).unwrap()).unwrap();
     let newvec = coll1_roll_replace_el::<Vec<T>, T, T>(
         bf
             .remove("window")
@@ -29,18 +38,20 @@ where
         *src
     );
     bf.insert("window", newvec);
-    (*src - minn) / (max - minn)
+    let maxx = *bf["window"].iter().max_by(|v, vv| v.partial_cmp(vv).unwrap()).unwrap();
+    let minn = *bf["window"].iter().min_by(|v, vv| v.partial_cmp(vv).unwrap()).unwrap();
+    mm_scaler(*src, minn, maxx)
 }
 
 pub fn mm_scaller_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>,
-    bf: &mut [&mut BF_VEC<T>],
+    bf: &mut BF_VEC<T>,
 ) -> T
 where 
-    T: Float
+    T: Float,
 {
-    mm_scaler_bf(&src[0], bf.last_mut().unwrap()[0].unwrap_vec_f())
+    mm_scaler_bf(&src[0], bf[0].unwrap_vec_f())
 }
 
 pub fn mm_scaller_coll<T, C>(
@@ -49,9 +60,9 @@ pub fn mm_scaller_coll<T, C>(
 ) -> C
 where
     T: Float,
-    C: FromIterator<T>
+    C: FromIterator<T>,
 {
-    let mut bf = bf_window(&src[..*window], window, &false);
+    let mut bf = bf_window(&src[..*window], window, &true);
     src
         .iter()
         .enumerate()

@@ -49,14 +49,14 @@ where
 pub fn ema_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
-    bf: &mut [&mut BF_VEC<T>]
+    bf: &mut BF_VEC<T>
 ) -> T 
 where 
     T: Float,
 {   
     ema_bf(
         src.first().expect("first src not found"),
-        bf[0].first_mut().expect("bf ema not found").unwrap_f(),
+        bf.first_mut().expect("bf ema not found").unwrap_f(),
     )
 }
 

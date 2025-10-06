@@ -48,12 +48,11 @@ where
 pub fn rsi_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
-    bf: &mut [&mut BF_VEC<T>]
+    bf: &mut BF_VEC<T>
 ) -> T 
 where 
     T: Float,
 {
-    let bf: &mut BF_VEC<T> = bf[0];
     let (bf1, rma) = bf.split_at_mut(1);
     let (rma1, rma2) = rma.split_at_mut(1);
 

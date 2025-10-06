@@ -6,7 +6,7 @@ use bc_utils::nums::avg;
 pub fn avg_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
-    _: &mut [&mut BF_VEC<T>],
+    _: &mut BF_VEC<T>,
 ) -> T
 where 
     T: Float,

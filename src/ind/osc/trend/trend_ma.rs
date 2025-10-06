@@ -28,12 +28,12 @@ where
 pub fn trend_ma_bf_abstr<T>(
     src: &SLICE_ARG<T>,
     _: &ARGS<T>, 
-    bf: &mut [&mut BF_VEC<T>]
+    bf: &mut BF_VEC<T>
 ) -> T
 where 
     T: Float
 {
-    trend_ma_bf(&src[0], bf[0].first_mut().unwrap().unwrap_f())
+    trend_ma_bf(&src[0], bf.first_mut().unwrap().unwrap_f())
 }
 
 pub fn trend_ma_coll<C, T>(

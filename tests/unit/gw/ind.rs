@@ -74,7 +74,6 @@ fn gw_ind_bf_res_sett_test_1() {
         (res["ind"] / 
         avg::<f64, _>(&[&OPEN[OPEN.len() - 2], &rsi_2]) - 1.0).abs() < 0.0001,
     );
-    assert_eq(res["mm_scaler_1"], );
 }
 
 #[test]
