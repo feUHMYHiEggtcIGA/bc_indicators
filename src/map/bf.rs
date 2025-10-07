@@ -35,5 +35,9 @@ where
         ("trend_ma", bf_trend_ma_abstr as FUNC_BF_IND<T>),
         ("time_frsrc", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
         ("mm_scaler", bf_window_abstr as FUNC_BF_IND<T>),
+        ("div", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
+        ("mult", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
+        ("minus", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
+        ("plus", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
     ])
 }

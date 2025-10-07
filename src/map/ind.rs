@@ -11,6 +11,10 @@ use crate::ind::{
     no_osc::trend::rma::{rma_bf_abstr, rma_f_abstr, rma_coll_abstr},
     no_osc::other::avg::{avg_bf_abstr, avg_coll_abstr, avg_f_abstr},
     no_osc::other::nohesi::{nohesi_bf_abstr, nohesi_coll_abstr, nohesi_f_abstr},
+    no_osc::math::div::{div_bf_abstr, div_coll_abstr},
+    no_osc::math::mult::{mult_bf_abstr, mult_coll_abstr},
+    no_osc::math::minus::{minus_bf_abstr, minus_coll_abstr},
+    no_osc::math::plus::{plus_bf_abstr, plus_coll_abstr},
     osc::other::rsi::{rsi_bf_abstr, rsi_f_abstr, rsi_coll_abstr},
     osc::trend::trend_ma::{trend_ma_bf_abstr, trend_ma_coll_abstr, trend_ma_f_abstr},
     osc::other::time::{time_frsrc_coll_abstr, time_frsrc_bf_abstr},
@@ -35,6 +39,10 @@ where
         ("trend_ma", trend_ma_bf_abstr as IND_T_BF<T>),
         ("time_frsrc", time_frsrc_bf_abstr as IND_T_BF<T>),
         ("mm_scaler", mm_scaler_bf_abstr as IND_T_BF<T>),
+        ("div", div_bf_abstr as IND_T_BF<T>),
+        ("mult", mult_bf_abstr as IND_T_BF<T>),
+        ("minus", minus_bf_abstr as IND_T_BF<T>),
+        ("plus", plus_bf_abstr as IND_T_BF<T>),
     ])
 }
 
@@ -76,6 +84,10 @@ where
         ("avg", avg_coll_abstr as IND_COLL<C, T>),
         ("trend_ma", trend_ma_coll_abstr as IND_COLL<C, T>),
         ("time_frsrc", time_frsrc_coll_abstr as IND_COLL<C, T>),
-        ("mm_scaler", mm_scaler_coll_abstr as IND_COLL<C, T>)
+        ("mm_scaler", mm_scaler_coll_abstr as IND_COLL<C, T>),
+        ("div", div_coll_abstr as IND_COLL<C, T>),
+        ("mult", mult_coll_abstr as IND_COLL<C, T>),
+        ("minus", minus_coll_abstr as IND_COLL<C, T>),
+        ("plus", plus_coll_abstr as IND_COLL<C, T>),
     ])
 }
