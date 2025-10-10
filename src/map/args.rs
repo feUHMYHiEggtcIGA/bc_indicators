@@ -24,7 +24,8 @@ where
                     "nohesi" => vec![
                         T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["hesi"]).unwrap()),
                     ],
-                    "avg" | "trend_ma" | "time_frsrc" | "div" | "minus" | "plus" | "mult"  => vec![],
+                    "time_frsrc" => vec![T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["divider"]).unwrap())],
+                    "avg" | "trend_ma" | "div" | "minus" | "plus" | "mult"  => vec![],
                     _ => panic!("key indication unknown"),
                 }
             )
