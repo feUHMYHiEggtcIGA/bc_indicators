@@ -25,7 +25,11 @@ where
                         T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["hesi"]).unwrap()),
                     ],
                     "time_frsrc" => vec![T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["divider"]).unwrap())],
-                    "avg" | "trend_ma" | "div" | "minus" | "plus" | "mult"  => vec![],
+                    "pivot" => vec![
+                        T_ARGS::<T>::Usize(setting.1.kwargs_usize["window"]),
+                        T_ARGS::<T>::Str(&setting.1.kwargs_string["type"])
+                    ],
+                    "avg" | "trend_ma" | "div" | "minus" | "plus" | "mult" | "wrap"  => vec![],
                     _ => panic!("key indication unknown"),
                 }
             )

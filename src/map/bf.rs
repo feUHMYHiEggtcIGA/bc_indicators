@@ -39,5 +39,7 @@ where
         ("mult", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
         ("minus", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
         ("plus", fn_ind_bf_abstr_default as FUNC_BF_IND<T>),
+        ("pivot", bf_window_abstr as FUNC_BF_IND<T>),
+        ("wrap", fn_ind_bf_abstr_default as FUNC_BF_IND<T>)
     ])
 }
