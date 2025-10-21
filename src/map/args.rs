@@ -27,7 +27,8 @@ where
                     "time_frsrc" => vec![T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["divider"]).unwrap())],
                     "pivot" => vec![
                         T_ARGS::<T>::Usize(setting.1.kwargs_usize["window"]),
-                        T_ARGS::<T>::Str(&setting.1.kwargs_string["type"])
+                        T_ARGS::<T>::Str(&setting.1.kwargs_string["type"]),
+                        T_ARGS::<T>::Float(T::from(setting.1.kwargs_f64["limit"]).unwrap()),
                     ],
                     "avg" | "trend_ma" | "div" | "minus" | "plus" | "mult" | "wrap"  => vec![],
                     _ => panic!("key indication unknown"),

@@ -25,10 +25,10 @@ use bc_utils_lg::types::maps::{MAP, MAP_LINK};
 #[test]
 fn pivot_coll_res_1()
 {
-    let res = pivot_coll::<_, Vec<_>>(OPEN.as_slice(), &10usize, "s");
+    let res = pivot_coll::<_, Vec<_>>(OPEN.as_slice(), &10usize, "s", &0.5);
     let mut bf = bf_window(&OPEN, &10usize, &false);
-    assert_eq!(res.last().unwrap(), &pivot_bf(&OPEN_LAST, "s", &mut bf));
-    let resnan = pivot_coll::<_, Vec<_>>(&[f64::NAN,], &1usize, "s");
+    assert_eq!(res.last().unwrap(), &pivot_bf(&OPEN_LAST, "s", &0.5, &mut bf));
+    let resnan = pivot_coll::<_, Vec<_>>(&[f64::NAN,], &1usize, "s", &0.5);
     assert!(resnan[0].is_nan());
 }
 
@@ -44,7 +44,7 @@ fn gw_pivot_res_1()
             },
         ],
         used_ind: vec![],
-        kwargs_f64: MAP::default(),
+        kwargs_f64: MAP::from_iter([("limit".to_string(), 0.5f64)]),
         kwargs_usize: MAP::from_iter([("window".to_string(), 10)]),
         kwargs_string: MAP::from_iter([("type".to_string(), "s".to_string())]),
     })]);
@@ -56,6 +56,6 @@ fn gw_pivot_res_1()
     let mut bfind = bf_window(&OPEN, &10, &false);
     assert_eq!(
         gw_ind_bf(&SRC_TRANSPOSE, &s, &mapind, &maparg, &mut bf)["pivot"],
-        pivot_bf(&OPEN_LAST, "s", &mut bfind)     
+        pivot_bf(&OPEN_LAST, "s", &0.5, &mut bfind)     
     );
 }
