@@ -25,7 +25,11 @@ where
         .iter()
         .enumerate()
         .zip(slc.iter().enumerate().skip(1))
-        .map(|(v, vv)|(v.0,  *v.1 - *vv.1));
+        .map(|(v, vv)|(v.0,  *v.1 - *vv.1))
+        .map(|v| {
+            println!("{:?}", v.1.to_f64());
+            v
+        });
     avg(match type_ {
         "s" => {
             let i = divv.min_by(
