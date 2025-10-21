@@ -21,15 +21,24 @@ where
     bf.get_mut("window").unwrap()[lenbf - 1] = *src;
     let mut slc = bf["window"].clone();
     slc.sort_by(|v, vv| v.partial_cmp(vv).unwrap());
-    let i = slc
+    let divv = slc
         .iter()
         .enumerate()
         .zip(slc.iter().enumerate().skip(1))
-        .map(|(v, vv)|(v.0,  *v.1 - *vv.1))
-        .max_by(|v, vv| v.1.partial_cmp(&vv.1).unwrap()).unwrap().0;
+        .map(|(v, vv)|(v.0,  *v.1 - *vv.1));
     avg(match type_ {
-        "s" => &slc[..i],
-        _ => &slc[i..],
+        "s" => {
+            let i = divv.min_by(
+                |v, vv| v.1.partial_cmp(&vv.1).unwrap()
+            ).unwrap().0;
+            &slc[..i]
+        },
+        _ => {
+            let i = divv.min_by(
+                |v, vv| v.1.partial_cmp(&vv.1).unwrap()
+            ).unwrap().0;
+            &slc[i..]
+        },
     })
 }
 
