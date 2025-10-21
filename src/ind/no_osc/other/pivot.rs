@@ -25,24 +25,13 @@ where
         .iter()
         .enumerate()
         .zip(slc.iter().enumerate().skip(1))
-        .map(|(v, vv)|(v.0,  *v.1 - *vv.1))
-        .map(|v| {
-            println!("{:?}", v.1.to_f64());
-            v
-        });
+        .map(|(v, vv)|(v.0,  *v.1 - *vv.1));
+    let i = divv.min_by(
+        |v, vv| v.1.partial_cmp(&vv.1).unwrap()
+    ).unwrap().0;
     avg(match type_ {
-        "s" => {
-            let i = divv.min_by(
-                |v, vv| v.1.partial_cmp(&vv.1).unwrap()
-            ).unwrap().0;
-            &slc[..i]
-        },
-        _ => {
-            let i = divv.min_by(
-                |v, vv| v.1.partial_cmp(&vv.1).unwrap()
-            ).unwrap().0;
-            &slc[i..]
-        },
+        "s" => &slc[..i],
+        _ => &slc[i..],
     })
 }
 
