@@ -16,22 +16,13 @@ impl TREND_MA {
             add_window_accuracy: 10,
         }
     }
-    pub fn set_window(
-        &mut self,
-        window: usize,
-    ) {
+    pub fn set_window(&mut self, window: usize) {
         self.window = window;
     }
-    pub fn set_mult_window_accuracy(
-        &mut self,
-        mult_window_accuracy: usize,
-    ) {
+    pub fn set_mult_window_accuracy(&mut self, mult_window_accuracy: usize) {
         self.mult_window_accuracy = mult_window_accuracy;
     }
-    pub fn set_add_window_accuracy(
-        &mut self,
-        add_window_accuracy: usize,
-    ) {
+    pub fn set_add_window_accuracy(&mut self, add_window_accuracy: usize) {
         self.add_window_accuracy = add_window_accuracy;
     }
 }
@@ -46,16 +37,10 @@ impl Indicator for TREND_MA {
     fn w(&self) -> usize {
         self.window * self.mult_window_accuracy + self.add_window_accuracy
     }
-    fn ind(
-        &self,
-        _: &[f64],
-    ) -> f64 {
+    fn ind(&self, _: &[f64]) -> f64 {
         Default::default()
     }
-    fn bf<'a>(
-        &self,
-        in_: &[Vec<f64>],
-    ) -> BF_INDICATOR<'a> {
+    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
         let mut bf = MAP::default();
         let src_l = in_[in_.len() - 2][0];
         let src = in_[in_.len() - 1][0];
@@ -93,7 +78,7 @@ impl IndicatorExt for TREND_MA {}
 mod tests {
     use std::sync::LazyLock;
 
-    use crate::test_funcs::test_funcs::*;
+    use crate::prelude_tests::prelude::*;
     use crate::trend_ma::*;
 
     const RES: f64 = 1.0;

@@ -13,15 +13,12 @@ pub struct MM_SCALER {
 impl MM_SCALER {
     pub fn new(window: usize) -> Self {
         Self {
-            window: window,
+            window,
             mult_window_accuracy: 1,
             add_window_accuracy: 1,
         }
     }
-    pub fn set_window(
-        &mut self,
-        window: usize,
-    ) {
+    pub fn set_window(&mut self, window: usize) {
         self.window = window;
     }
 }
@@ -36,16 +33,10 @@ impl Indicator for MM_SCALER {
     fn w(&self) -> usize {
         self.window * self.mult_window_accuracy + self.add_window_accuracy
     }
-    fn ind(
-        &self,
-        math_operations: &[f64],
-    ) -> f64 {
+    fn ind(&self, math_operations: &[f64]) -> f64 {
         (math_operations[0] - math_operations[1]) / (math_operations[2] - math_operations[1])
     }
-    fn bf<'a>(
-        &self,
-        in_: &[Vec<f64>],
-    ) -> BF_INDICATOR<'a> {
+    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
         RefCell::new(vec![MAP::from_iter([(
             "src_l_vec",
             in_[in_.len() - self.window..]
@@ -92,7 +83,7 @@ mod tests {
     use std::sync::LazyLock;
 
     use crate::mm_scaler::*;
-    use crate::test_funcs::test_funcs::*;
+    use crate::prelude_tests::prelude::*;
 
     static RES: f64 = 0.6;
     static IN_: LazyLock<Vec<Vec<f64>>> =

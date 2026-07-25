@@ -6,11 +6,8 @@ pub mod test_funcs {
 
     use crate::prelude::*;
 
-    pub fn test_bf_res_1<T>(
-        settings_indicator: T,
-        in_: &[Vec<f64>],
-        eq: f64,
-    ) where
+    pub fn test_bf_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
+    where
         T: Indicator,
         T: IndicatorExt,
     {
@@ -26,23 +23,16 @@ pub mod test_funcs {
         );
     }
 
-    pub fn test_f_res_1<T>(
-        settings_indicator: T,
-        in_: &[Vec<f64>],
-        eq: f64,
-    ) where
+    pub fn test_f_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
+    where
         T: Indicator,
         T: IndicatorExt,
     {
         assert_eq_pr!(settings_indicator.ind_f(in_), eq,);
     }
 
-    pub fn test_coll_res_1<T>(
-        settings_indicator: T,
-        in_: &[Vec<f64>],
-        eq: f64,
-        len_elements: usize,
-    ) where
+    pub fn test_coll_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64, len_elements: usize)
+    where
         T: Indicator,
         T: IndicatorExt,
     {
@@ -53,11 +43,8 @@ pub mod test_funcs {
         );
     }
 
-    pub fn test_coll_res_2<T>(
-        settings_indicator: T,
-        in_: &[Vec<f64>],
-        len_elements: usize,
-    ) where
+    pub fn test_coll_res_2<T>(settings_indicator: T, in_: &[Vec<f64>], len_elements: usize)
+    where
         T: IndicatorExt,
     {
         let in_ = &in_[in_.len() - len_elements..];

@@ -17,10 +17,7 @@ impl SMA {
             add_window_accuracy: 1,
         }
     }
-    pub fn set_window(
-        &mut self,
-        window: usize,
-    ) {
+    pub fn set_window(&mut self, window: usize) {
         self.window = window;
     }
 }
@@ -35,16 +32,10 @@ impl Indicator for SMA {
     fn w(&self) -> usize {
         self.window * self.mult_window_accuracy + self.add_window_accuracy
     }
-    fn ind(
-        &self,
-        math_operations: &[f64],
-    ) -> f64 {
+    fn ind(&self, math_operations: &[f64]) -> f64 {
         avg(math_operations)
     }
-    fn bf<'a>(
-        &self,
-        in_: &[Vec<f64>],
-    ) -> BF_INDICATOR<'a> {
+    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
         RefCell::new(vec![MAP::from_iter([(
             "src_l_vec",
             in_[in_.len() - self.window..]
@@ -82,10 +73,9 @@ impl IndicatorExt for SMA {}
 mod tests {
     use std::sync::LazyLock;
 
-    use bc_utils_lg::statics::prices::OPEN;
+    use crate::prelude_tests::prelude::*;
 
     use crate::sma::*;
-    use crate::test_funcs::test_funcs::*;
 
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
         OPEN.iter()

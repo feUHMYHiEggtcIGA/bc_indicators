@@ -16,22 +16,13 @@ impl RSI {
             add_window_accuracy: 2,
         }
     }
-    pub fn set_window(
-        &mut self,
-        window: usize,
-    ) {
+    pub fn set_window(&mut self, window: usize) {
         self.window = window;
     }
-    pub fn set_mult_window_accuracy(
-        &mut self,
-        mult_window_accuracy: usize,
-    ) {
+    pub fn set_mult_window_accuracy(&mut self, mult_window_accuracy: usize) {
         self.mult_window_accuracy = mult_window_accuracy;
     }
-    pub fn set_add_window_accuracy(
-        &mut self,
-        add_window_accuracy: usize,
-    ) {
+    pub fn set_add_window_accuracy(&mut self, add_window_accuracy: usize) {
         self.add_window_accuracy = add_window_accuracy;
     }
 }
@@ -46,16 +37,10 @@ impl Indicator for RSI {
     fn w(&self) -> usize {
         self.window * self.mult_window_accuracy + self.add_window_accuracy
     }
-    fn ind(
-        &self,
-        math_operations: &[f64],
-    ) -> f64 {
+    fn ind(&self, math_operations: &[f64]) -> f64 {
         (100.0 - (100.0 / (1.0 + math_operations[0] / math_operations[1]))) / 100.0
     }
-    fn bf<'a>(
-        &self,
-        in_: &[Vec<f64>],
-    ) -> RefCell<Vec<MAP<&'a str, Vec<f64>>>> {
+    fn bf<'a>(&self, in_: &[Vec<f64>]) -> RefCell<Vec<MAP<&'a str, Vec<f64>>>> {
         let mut u = Vec::new();
         let mut d = Vec::new();
         let mut src_l = f64::NAN;
@@ -115,10 +100,9 @@ impl IndicatorExt for RSI {}
 mod tests {
     use std::sync::LazyLock;
 
-    use bc_utils_lg::statics::prices::OPEN;
+    use crate::prelude_tests::prelude::*;
 
     use crate::rsi::*;
-    use crate::test_funcs::test_funcs::*;
 
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
         OPEN.iter()

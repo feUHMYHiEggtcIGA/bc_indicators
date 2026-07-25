@@ -9,6 +9,7 @@ pub mod osc_mult;
 pub mod percent;
 pub mod plus;
 pub mod prelude;
+pub mod prelude_tests;
 pub mod profit_factor;
 pub mod rem;
 pub mod repeat;
