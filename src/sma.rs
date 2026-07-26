@@ -1,69 +1,79 @@
-use bc_utils::{nums::avg, other::roll_slice1};
+use bc_utils::nums::avg;
 
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct SMA {
+#[derive(Debug, PartialEq, PartialOrd)]
+pub struct SmaParams {
     pub window: usize,
-    pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
+}
+
+impl Default for SmaParams {
+    fn default() -> Self {
+        Self { window: 14 }
+    }
+}
+
+impl SmaParams {
+    pub fn new(window: usize) -> Self {
+        Self {
+            window,
+            ..Default::default()
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
+pub struct SmaBf {
+    src_l: Vec<f64>,
+}
+
+#[derive(Debug, PartialEq, PartialOrd)]
+pub struct SMA {
+    pub params: SmaParams,
+    bf: RefCell<SmaBf>,
+    bf_state: RefCell<SmaBf>,
+}
+
+impl Default for SMA {
+    fn default() -> Self {
+        Self {
+            params: Default::default(),
+            bf: Default::default(),
+            bf_state: Default::default(),
+        }
+    }
 }
 
 impl SMA {
     pub fn new(window: usize) -> Self {
         Self {
-            window,
-            mult_window_accuracy: 1,
-            add_window_accuracy: 1,
+            params: SmaParams::new(window),
+            ..Default::default()
         }
-    }
-    pub fn set_window(&mut self, window: usize) {
-        self.window = window;
-    }
-}
-
-impl Default for SMA {
-    fn default() -> Self {
-        SMA::new(14)
     }
 }
 
 impl Indicator for SMA {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        self.params.window + 1
     }
-    fn ind(&self, math_operations: &[f64]) -> f64 {
-        avg(math_operations)
+    fn init_bf(&self, in_: &[Vec<f64>]) {
+        self.bf.borrow_mut().src_l = in_[in_.len() - self.params.window..]
+            .iter()
+            .map(|v| v[0])
+            .collect::<Vec<f64>>();
+        self.bf_state.borrow_mut().src_l = self.bf.borrow().src_l.clone();
     }
-    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        RefCell::new(vec![MAP::from_iter([(
-            "src_l_vec",
-            in_[in_.len() - self.window..]
-                .into_iter()
-                .map(|v| v[0])
-                .collect::<Vec<f64>>(),
-        )])])
+    fn execute_bf(&self) {
+        *self.bf.borrow_mut() = self.bf_state.borrow().clone();
     }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        bf: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        index_: usize,
-    ) -> f64 {
-        roll_slice1(
-            bf.borrow_mut()
-                .get_mut(index_)
-                .unwrap()
-                .get_mut("src_l_vec")
-                .unwrap(),
-            -1,
-        );
-        bf.borrow_mut()
-            .get_mut(index_)
-            .unwrap()
-            .get_mut("src_l_vec")
-            .unwrap()[self.window - 1] = in_[0];
-        avg(&bf.borrow()[index_]["src_l_vec"][..])
+    fn ind(&self, in_: &[f64]) -> f64 {
+        self.bf_state.borrow_mut().src_l = {
+            let mut bind = self.bf.borrow().src_l[1..].to_vec();
+            bind.push(in_[0]);
+            bind
+        };
+        avg(&self.bf_state.borrow().src_l)
     }
 }
 
@@ -71,11 +81,10 @@ impl IndicatorExt for SMA {}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
     use crate::prelude_tests::prelude::*;
-
-    use crate::sma::*;
 
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
         OPEN.iter()
@@ -89,7 +98,7 @@ mod tests {
     #[test]
     fn sma_bf_res_1() {
         let settings = SMA::new(10);
-        test_bf_res_1(settings, &IN_, *RES);
+        test_ind_bf_res_1(settings, &IN_, *RES);
     }
 
     #[test]

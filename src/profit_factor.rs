@@ -3,32 +3,12 @@ use bc_utils::nums::dz;
 
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct PROFIT_FACTOR {
-    pub window: usize,
-    pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
-}
-
-impl PROFIT_FACTOR {
-    pub fn new() -> Self {
-        Self {
-            window: 0,
-            mult_window_accuracy: 0,
-            add_window_accuracy: 0,
-        }
-    }
-}
-
-impl Default for PROFIT_FACTOR {
-    fn default() -> Self {
-        PROFIT_FACTOR::new()
-    }
-}
+#[derive(Debug, PartialEq, PartialOrd, Default)]
+pub struct PROFIT_FACTOR;
 
 impl Indicator for PROFIT_FACTOR {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        0
     }
     fn ind(&self, math_operations: &[f64]) -> f64 {
         let mut negative = 0.;
@@ -49,17 +29,8 @@ impl Indicator for PROFIT_FACTOR {
             positive / negative
         }
     }
-    fn bf<'a>(&self, _: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        Default::default()
-    }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        _: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        _: usize,
-    ) -> f64 {
-        self.ind(in_)
-    }
+    fn init_bf(&self, _: &[Vec<f64>]) {}
+    fn execute_bf(&self) {}
     fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
         self.ind(in_.last().expect("no elements in slice"))
     }
@@ -79,10 +50,10 @@ impl IndicatorExt for PROFIT_FACTOR {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
     use crate::prelude_tests::prelude::*;
-    use crate::profit_factor::*;
 
     static RES: f64 = 3.0;
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| vec![vec![1.0, 2.0, -1.0]; 3]);
@@ -90,7 +61,7 @@ mod tests {
     #[test]
     fn profit_factor_bf_res_1() {
         let settings = PROFIT_FACTOR::default();
-        test_bf_res_1(settings, &IN_, RES);
+        test_ind_bf_res_1(settings, &IN_, RES);
     }
 
     #[test]

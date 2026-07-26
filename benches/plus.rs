@@ -10,20 +10,20 @@ static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
 });
 
 fn plus_bf_1(c: &mut Criterion) {
-    let ind = PLUS::new();
-    let bf = ind.bf(&IN_);
+    let ind = PLUS;
+    ind.init_bf(&IN_);
     c.bench_function("plus_bf_1", |b| {
-        b.iter(|| ind.ind_with_bf(&[OPEN_LAST, CLOSE_LAST], &bf, 0))
+        b.iter(|| ind.ind(&[OPEN_LAST, CLOSE_LAST]))
     });
 }
 
 fn plus_f_1(c: &mut Criterion) {
-    let ind = PLUS::new();
+    let ind = PLUS;
     c.bench_function("plus_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
 }
 
 fn plus_coll_1(c: &mut Criterion) {
-    let ind = PLUS::new();
+    let ind = PLUS;
     c.bench_function("plus_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
 }
 

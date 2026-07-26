@@ -1,51 +1,25 @@
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Clone)]
+#[derive(Debug, PartialEq, PartialOrd, Clone, Default)]
 pub struct REPEAT {
     pub value: f64,
-    pub window: usize,
-    pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
 }
 
 impl REPEAT {
     pub fn new(value: f64) -> Self {
-        Self {
-            value,
-            window: 0,
-            mult_window_accuracy: 0,
-            add_window_accuracy: 0,
-        }
-    }
-    pub fn set_value(&mut self, value: f64) {
-        self.value = value;
-    }
-}
-
-impl Default for REPEAT {
-    fn default() -> Self {
-        REPEAT::new(0.0)
+        Self { value }
     }
 }
 
 impl Indicator for REPEAT {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        0
     }
     fn ind(&self, _: &[f64]) -> f64 {
         self.value
     }
-    fn bf<'a>(&self, _: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        Default::default()
-    }
-    fn ind_with_bf<'a>(
-        &self,
-        _: &[f64],
-        _: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        _: usize,
-    ) -> f64 {
-        self.value
-    }
+    fn init_bf(&self, _in_: &[Vec<f64>]) {}
+    fn execute_bf(&self) {}
     fn ind_f(&self, _: &[Vec<f64>]) -> f64 {
         self.value
     }
@@ -65,11 +39,10 @@ impl IndicatorExt for REPEAT {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
     use crate::prelude_tests::prelude::*;
-
-    use crate::repeat::*;
 
     static RES: f64 = 1.0;
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
@@ -81,7 +54,7 @@ mod tests {
 
     #[test]
     fn repeat_bf_res_1() {
-        test_bf_res_1((*SETTINGS_).clone(), &IN_, RES);
+        test_ind_bf_res_1((*SETTINGS_).clone(), &IN_, RES);
     }
 
     #[test]

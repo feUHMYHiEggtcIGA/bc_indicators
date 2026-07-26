@@ -10,20 +10,20 @@ static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
 });
 
 fn wrap_bf_1(c: &mut Criterion) {
-    let ind = WRAP::new();
-    let bf = ind.bf(&IN_);
+    let ind = WRAP;
+    ind.init_bf(&IN_);
     c.bench_function("wrap_bf_1", |b| {
-        b.iter(|| ind.ind_with_bf(&[OPEN_LAST, CLOSE_LAST], &bf, 0))
+        b.iter(|| ind.ind(&[OPEN_LAST, CLOSE_LAST]))
     });
 }
 
 fn wrap_f_1(c: &mut Criterion) {
-    let ind = WRAP::new();
+    let ind = WRAP;
     c.bench_function("wrap_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
 }
 
 fn wrap_coll_1(c: &mut Criterion) {
-    let ind = WRAP::new();
+    let ind = WRAP;
     c.bench_function("wrap_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
 }
 

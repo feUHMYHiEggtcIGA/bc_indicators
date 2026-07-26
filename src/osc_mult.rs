@@ -6,9 +6,16 @@ pub struct OSC_MULT {
     pub th_short: f64,
     pub th_long: f64,
     pub max_value: f64,
-    pub window: usize,
-    pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
+}
+
+impl Default for OSC_MULT {
+    fn default() -> Self {
+        Self {
+            th_short: 0.15,
+            th_long: 0.15,
+            max_value: 1.,
+        }
+    }
 }
 
 impl OSC_MULT {
@@ -17,36 +24,18 @@ impl OSC_MULT {
             th_short,
             th_long,
             max_value,
-            window: 0,
-            mult_window_accuracy: 0,
-            add_window_accuracy: 0,
         }
-    }
-    pub fn set_th_short(&mut self, th_short: f64) {
-        self.th_short = th_short;
-    }
-    pub fn set_th_long(&mut self, th_long: f64) {
-        self.th_long = th_long;
-    }
-    pub fn set_max_value(&mut self, max_value: f64) {
-        self.max_value = max_value;
-    }
-}
-
-impl Default for OSC_MULT {
-    fn default() -> Self {
-        OSC_MULT::new(0.15, 0.15, 1.0)
     }
 }
 
 impl Indicator for OSC_MULT {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        0
     }
-    fn ind(&self, math_operations: &[f64]) -> f64 {
+    fn ind(&self, in_: &[f64]) -> f64 {
         let diff: f64;
         let v2: f64;
-        let v_b = math_operations[0];
+        let v_b = in_[0];
 
         if v_b >= (self.max_value - self.th_short) {
             diff = self.th_short;
@@ -60,17 +49,8 @@ impl Indicator for OSC_MULT {
         }
         (diff - v2) / diff
     }
-    fn bf<'a>(&self, _: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        Default::default()
-    }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        _: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        _: usize,
-    ) -> f64 {
-        self.ind(in_)
-    }
+    fn init_bf(&self, _in_: &[Vec<f64>]) {}
+    fn execute_bf(&self) {}
     fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
         self.ind(in_.last().expect("no elements in slice"))
     }
@@ -90,10 +70,9 @@ impl IndicatorExt for OSC_MULT {
 
 #[cfg(test)]
 mod tests {
-    use std::sync::LazyLock;
-
-    use crate::osc_mult::*;
+    use super::*;
     use crate::prelude_tests::prelude::*;
+    use std::sync::LazyLock;
 
     static RES: f64 = 0.5;
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| vec![vec![85.0]; 5]);
@@ -101,7 +80,7 @@ mod tests {
     #[test]
     fn osc_mult_bf_res_1() {
         let settings = OSC_MULT::new(30.0, 70.0, 100.0);
-        test_bf_res_1(settings, &IN_, RES);
+        test_ind_bf_res_1(settings, &IN_, RES);
     }
 
     #[test]

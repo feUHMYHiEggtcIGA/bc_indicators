@@ -12,10 +12,8 @@ static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
 
 fn ema_bf_1(c: &mut Criterion) {
     let ind = EMA::new(4);
-    let bf = ind.bf(&IN_);
-    c.bench_function("ema_bf_1", |b| {
-        b.iter(|| ind.ind_with_bf(&[OPEN_LAST], &bf, 0))
-    });
+    ind.init_bf(&IN_);
+    c.bench_function("ema_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
 fn ema_f_1(c: &mut Criterion) {

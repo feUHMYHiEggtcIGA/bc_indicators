@@ -1,46 +1,66 @@
 use crate::prelude::*;
 use crate::rma::RMA;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct RSI {
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
+pub struct RsiBf {
+    pub src_l: f64,
+}
+
+#[derive(Debug, PartialEq, PartialOrd)]
+pub struct RsiParams {
     pub window: usize,
     pub mult_window_accuracy: usize,
     pub add_window_accuracy: usize,
 }
 
-impl RSI {
-    pub fn new(window: usize) -> Self {
+impl Default for RsiParams {
+    fn default() -> Self {
         Self {
-            window,
+            window: 14,
             mult_window_accuracy: 10,
             add_window_accuracy: 2,
         }
     }
-    pub fn set_window(&mut self, window: usize) {
-        self.window = window;
-    }
-    pub fn set_mult_window_accuracy(&mut self, mult_window_accuracy: usize) {
-        self.mult_window_accuracy = mult_window_accuracy;
-    }
-    pub fn set_add_window_accuracy(&mut self, add_window_accuracy: usize) {
-        self.add_window_accuracy = add_window_accuracy;
+}
+
+impl RsiParams {
+    pub fn new(window: usize) -> Self {
+        Self {
+            window,
+            ..Default::default()
+        }
     }
 }
 
-impl Default for RSI {
-    fn default() -> Self {
-        RSI::new(14)
+#[derive(Debug, PartialEq, PartialOrd, Default)]
+pub struct RSI {
+    pub params: RsiParams,
+    bf: RefCell<RsiBf>,
+    bf_state: RefCell<RsiBf>,
+    pub rma1: RMA,
+    pub rma2: RMA,
+}
+
+impl RSI {
+    pub fn new(window: usize) -> Self {
+        Self {
+            params: RsiParams::new(window),
+            rma1: RMA::new(window),
+            rma2: RMA::new(window),
+            ..Default::default()
+        }
     }
+}
+
+fn rsi(rma1: f64, rma2: f64) -> f64 {
+    (100.0 - (100.0 / (1.0 + rma1 / rma2))) / 100.0
 }
 
 impl Indicator for RSI {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        self.params.window * self.params.mult_window_accuracy + self.params.add_window_accuracy
     }
-    fn ind(&self, math_operations: &[f64]) -> f64 {
-        (100.0 - (100.0 / (1.0 + math_operations[0] / math_operations[1]))) / 100.0
-    }
-    fn bf<'a>(&self, in_: &[Vec<f64>]) -> RefCell<Vec<MAP<&'a str, Vec<f64>>>> {
+    fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut u = Vec::new();
         let mut d = Vec::new();
         let mut src_l = f64::NAN;
@@ -57,40 +77,25 @@ impl Indicator for RSI {
             d.push((-change).max(0.0));
             src_l = el;
         }
-        let settings_rma = RMA::new(self.window);
-        RefCell::new(vec![
-            RMA::bf(
-                &settings_rma,
-                &u.into_iter().map(|v| vec![v]).collect::<Vec<Vec<f64>>>(),
-            )
-            .take()
-            .pop()
-            .expect("there is no data inside the RMA buffer"),
-            RMA::bf(
-                &settings_rma,
-                &d.into_iter().map(|v| vec![v]).collect::<Vec<Vec<f64>>>(),
-            )
-            .take()
-            .pop()
-            .expect("there is no data inside the RMA buffer"),
-            MAP::from_iter([("src_l", vec![src_l])]),
-        ])
+        self.bf.borrow_mut().src_l = src_l;
+        *self.bf_state.borrow_mut() = self.bf.borrow().clone();
+        self.rma1
+            .init_bf(&u.into_iter().map(|v| vec![v]).collect::<Vec<Vec<f64>>>());
+        self.rma2
+            .init_bf(&d.into_iter().map(|v| vec![v]).collect::<Vec<Vec<f64>>>());
     }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        bf: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        index_: usize,
-    ) -> f64 {
-        let settings_rma = RMA::new(self.window);
-        let change = in_[0] - bf.borrow()[2]["src_l"][0];
+    fn execute_bf(&self) {
+        *self.bf.borrow_mut() = self.bf_state.borrow().clone();
+        self.rma1.execute_bf();
+        self.rma2.execute_bf();
+    }
+
+    fn ind(&self, in_: &[f64]) -> f64 {
+        let change = in_[0] - self.bf.borrow().src_l;
         let u = 0.0f64.max(change);
         let d = 0.0f64.max(-change);
-        bf.borrow_mut()[2].insert("src_l", in_.to_vec());
-        self.ind(&[
-            RMA::ind_with_bf(&settings_rma, &[u], bf, index_),
-            RMA::ind_with_bf(&settings_rma, &[d], bf, index_ + 1),
-        ])
+        self.bf_state.borrow_mut().src_l = in_[0];
+        rsi(self.rma1.ind(&[u]), self.rma2.ind(&[d]))
     }
 }
 
@@ -98,11 +103,10 @@ impl IndicatorExt for RSI {}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
     use crate::prelude_tests::prelude::*;
-
-    use crate::rsi::*;
 
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
         OPEN.iter()
@@ -115,7 +119,7 @@ mod tests {
     #[test]
     fn rsi_bf_res_1() {
         let settings = RSI::new(2);
-        test_bf_res_1(settings, &IN_, RES);
+        test_ind_bf_res_1(settings, &IN_, RES);
     }
 
     #[test]

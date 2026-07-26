@@ -1,74 +1,98 @@
 #![allow(non_camel_case_types)]
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct TREND_MA {
-    pub window: usize,
-    pub mult_window_accuracy: usize,
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+pub struct TrendMaParams {
     pub add_window_accuracy: usize,
+    pub trend_short: f64,
+    pub trend_long: f64,
+    pub trend_hold: f64,
+}
+
+impl Default for TrendMaParams {
+    fn default() -> Self {
+        Self {
+            add_window_accuracy: 10,
+            trend_short: -1.,
+            trend_long: 1.,
+            trend_hold: 0.,
+        }
+    }
+}
+
+impl TrendMaParams {
+    pub fn new(
+        add_window_accuracy: usize,
+        trend_short: f64,
+        trend_long: f64,
+        trend_hold: f64,
+    ) -> Self {
+        Self {
+            add_window_accuracy,
+            trend_short,
+            trend_long,
+            trend_hold,
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, PartialOrd, Clone, Default)]
+pub struct TrendMaBf {
+    trend: f64,
+    src_l: f64,
+}
+
+#[derive(Debug, PartialEq, PartialOrd, Clone, Default)]
+pub struct TREND_MA {
+    pub params: TrendMaParams,
+    bf: RefCell<TrendMaBf>,
+    bf_state: RefCell<TrendMaBf>,
 }
 
 impl TREND_MA {
-    pub fn new() -> Self {
+    pub fn new(
+        add_window_accuracy: usize,
+        trend_short: f64,
+        trend_long: f64,
+        trend_hold: f64,
+    ) -> Self {
         Self {
-            window: 0,
-            mult_window_accuracy: 1,
-            add_window_accuracy: 10,
+            params: TrendMaParams::new(add_window_accuracy, trend_short, trend_long, trend_hold),
+            ..Default::default()
         }
-    }
-    pub fn set_window(&mut self, window: usize) {
-        self.window = window;
-    }
-    pub fn set_mult_window_accuracy(&mut self, mult_window_accuracy: usize) {
-        self.mult_window_accuracy = mult_window_accuracy;
-    }
-    pub fn set_add_window_accuracy(&mut self, add_window_accuracy: usize) {
-        self.add_window_accuracy = add_window_accuracy;
-    }
-}
-
-impl Default for TREND_MA {
-    fn default() -> Self {
-        TREND_MA::new()
     }
 }
 
 impl Indicator for TREND_MA {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        self.params.add_window_accuracy
     }
-    fn ind(&self, _: &[f64]) -> f64 {
-        Default::default()
-    }
-    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        let mut bf = MAP::default();
+    fn init_bf(&self, in_: &[Vec<f64>]) {
         let src_l = in_[in_.len() - 2][0];
         let src = in_[in_.len() - 1][0];
         if src > src_l {
-            bf.insert("trend", vec![1.0]);
+            self.bf.borrow_mut().trend = self.params.trend_long;
         } else if src < src_l {
-            bf.insert("trend", vec![-1.0]);
+            self.bf.borrow_mut().trend = self.params.trend_short;
         } else {
-            bf.insert("trend", vec![0.0]);
+            self.bf.borrow_mut().trend = 0.0;
         }
-        bf.insert("src_l", vec![src]);
-        RefCell::new(vec![bf])
+        self.bf.borrow_mut().src_l = src;
+        *self.bf_state.borrow_mut() = self.bf.borrow().clone();
     }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        bf: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        index_: usize,
-    ) -> f64 {
-        let src_l = bf.borrow()[index_]["src_l"][0];
+    fn execute_bf(&self) {
+        *self.bf.borrow_mut() = self.bf_state.borrow().clone();
+    }
+    fn ind(&self, in_: &[f64]) -> f64 {
+        let src_l = self.bf.borrow().src_l;
         let src = in_[0];
         if src > src_l {
-            bf.borrow_mut()[index_].insert("trend", vec![1.0]);
+            self.bf_state.borrow_mut().trend = self.params.trend_long;
         } else if src < src_l {
-            bf.borrow_mut()[index_].insert("trend", vec![-1.0]);
+            self.bf_state.borrow_mut().trend = self.params.trend_short;
         }
-        bf.borrow_mut()[index_].insert("src_l", vec![src]);
-        bf.borrow()[index_]["trend"][0]
+        self.bf_state.borrow_mut().src_l = src;
+        self.bf_state.borrow_mut().trend
     }
 }
 
@@ -76,10 +100,10 @@ impl IndicatorExt for TREND_MA {}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
     use crate::prelude_tests::prelude::*;
-    use crate::trend_ma::*;
 
     const RES: f64 = 1.0;
     static IN_: LazyLock<Vec<Vec<f64>>> =
@@ -87,25 +111,25 @@ mod tests {
 
     #[test]
     fn trend_ma_bf_res_1() {
-        let settings = TREND_MA::new();
-        test_bf_res_1(settings, &IN_, RES);
+        let settings = TREND_MA::default();
+        test_ind_bf_res_1(settings, &IN_, RES);
     }
 
     #[test]
     fn trend_ma_f_res_1() {
-        let settings = TREND_MA::new();
+        let settings = TREND_MA::default();
         test_f_res_1(settings, &IN_, RES);
     }
 
     #[test]
     fn trend_ma_coll_res_1() {
-        let settings = TREND_MA::new();
+        let settings = TREND_MA::default();
         test_coll_res_1(settings, &IN_, RES, 10);
     }
 
     #[test]
     fn trend_ma_coll_res_2() {
-        let settings = TREND_MA::new();
+        let settings = TREND_MA::default();
         test_coll_res_2(settings, &IN_, 10);
     }
 }

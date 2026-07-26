@@ -6,21 +6,19 @@ pub mod test_funcs {
 
     use crate::prelude::*;
 
-    pub fn test_bf_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
+    pub fn test_ind_bf_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
     where
         T: Indicator,
         T: IndicatorExt,
     {
-        let bf = settings_indicator.bf(in_
-            .into_iter()
-            .cloned()
-            .take(in_.len() - 1)
-            .collect::<Vec<Vec<f64>>>()
-            .as_slice());
-        assert_eq_pr!(
-            settings_indicator.ind_with_bf(in_.last().unwrap(), &bf, 0),
-            eq,
+        settings_indicator.init_bf(
+            in_.into_iter()
+                .cloned()
+                .take(in_.len() - 1)
+                .collect::<Vec<Vec<f64>>>()
+                .as_slice(),
         );
+        assert_eq_pr!(settings_indicator.ind(in_.last().unwrap(),), eq,);
     }
 
     pub fn test_f_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)

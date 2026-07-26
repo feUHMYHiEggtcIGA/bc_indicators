@@ -3,7 +3,7 @@ pub mod div;
 pub mod ema;
 pub mod main_trait;
 pub mod minus;
-pub mod mm_scaler;
+pub mod mm_scaller;
 pub mod mult;
 pub mod osc_mult;
 pub mod percent;

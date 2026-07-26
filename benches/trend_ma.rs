@@ -11,20 +11,18 @@ static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
 });
 
 fn trend_ma_bf_1(c: &mut Criterion) {
-    let ind = TREND_MA::new();
-    let bf = ind.bf(&IN_);
-    c.bench_function("trend_ma_bf_1", |b| {
-        b.iter(|| ind.ind_with_bf(&[OPEN_LAST], &bf, 0))
-    });
+    let ind = TREND_MA::default();
+    ind.init_bf(&IN_);
+    c.bench_function("trend_ma_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
 fn trend_ma_f_1(c: &mut Criterion) {
-    let ind = TREND_MA::new();
+    let ind = TREND_MA::default();
     c.bench_function("trend_ma_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
 }
 
 fn trend_ma_coll_1(c: &mut Criterion) {
-    let ind = TREND_MA::new();
+    let ind = TREND_MA::default();
     c.bench_function("trend_ma_coll_1", |b| {
         b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
     });

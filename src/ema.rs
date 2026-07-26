@@ -1,82 +1,89 @@
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct EMA {
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
+pub struct EmaParams {
     pub window: usize,
     pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
+}
+
+impl Default for EmaParams {
+    fn default() -> Self {
+        Self {
+            window: 14,
+            mult_window_accuracy: 10,
+        }
+    }
+}
+
+impl EmaParams {
+    pub fn new(window: usize) -> Self {
+        Self {
+            window,
+            ..Default::default()
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
+pub struct EmaBf {
+    alpha: f64,
+    res: f64,
+}
+
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
+pub struct EMA {
+    pub params: EmaParams,
+    bf: RefCell<EmaBf>,
+    bf_state: RefCell<EmaBf>,
 }
 
 impl EMA {
     pub fn new(window: usize) -> Self {
         Self {
-            window,
-            mult_window_accuracy: 10,
-            add_window_accuracy: 1,
+            params: EmaParams::new(window),
+            ..Default::default()
         }
-    }
-    pub fn set_window(&mut self, window: usize) {
-        self.window = window;
-    }
-    pub fn set_mult_window_accuracy(&mut self, mult_window_accuracy: usize) {
-        self.mult_window_accuracy = mult_window_accuracy;
-    }
-    pub fn set_add_window_accuracy(&mut self, add_window_accuracy: usize) {
-        self.add_window_accuracy = add_window_accuracy;
     }
 }
 
-impl Default for EMA {
-    fn default() -> Self {
-        EMA::new(14)
-    }
+fn ema(src: f64, res: f64, alpha: f64) -> f64 {
+    src * alpha + res * (1.0 - alpha)
 }
 
 impl Indicator for EMA {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        self.params.window * self.params.mult_window_accuracy + 1
     }
-    fn ind(&self, math_operations: &[f64]) -> f64 {
-        math_operations[0] * math_operations[2] + math_operations[1] * (1.0 - math_operations[2])
-    }
-    fn bf<'a>(&self, in_: &[Vec<f64>]) -> BF_INDICATOR<'a> {
+    fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut res = 0.0;
         let len = in_.len();
-        let window_t = self.window as f64;
+        let window_t = self.params.window as f64;
         let alpha = 2.0 / (window_t + 1.0);
 
-        for (i, el) in in_[len - self.window * self.mult_window_accuracy..]
+        for (i, el) in in_[len - self.params.window * self.params.mult_window_accuracy..]
             .iter()
             .map(|v| v[0])
             .enumerate()
         {
-            if i < self.window {
+            if i < self.params.window {
                 res += el;
                 continue;
             }
-            if i == self.window - 1 {
+            if i == self.params.window - 1 {
                 res /= window_t;
             }
-            res = self.ind(&[el, res, alpha]);
+            res = ema(el, res, alpha);
         }
-        RefCell::new(vec![MAP::from_iter([
-            ("alpha", vec![alpha]),
-            ("res", vec![res]),
-        ])])
+        self.bf.borrow_mut().alpha = alpha;
+        self.bf.borrow_mut().res = res;
+        *self.bf_state.borrow_mut() = self.bf.borrow().clone();
     }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        bf: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        index_: usize,
-    ) -> f64 {
-        let res = self.ind(&[
-            in_[0],
-            bf.borrow()[index_]["res"][0],
-            bf.borrow()[index_]["alpha"][0],
-        ]);
-        bf.borrow_mut()[index_].insert("res", vec![res]);
-        res
+    fn execute_bf(&self) {
+        *self.bf.borrow_mut() = self.bf_state.borrow().clone();
+    }
+    fn ind(&self, in_: &[f64]) -> f64 {
+        self.bf_state.borrow_mut().res = ema(in_[0], self.bf.borrow().res, self.bf.borrow().alpha);
+        self.bf_state.borrow().res
     }
 }
 
@@ -84,9 +91,9 @@ impl IndicatorExt for EMA {}
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::sync::LazyLock;
 
-    use crate::ema::*;
     use crate::prelude_tests::prelude::*;
 
     static RES: f64 = 2.254711084891796;
@@ -100,7 +107,7 @@ mod tests {
     #[test]
     fn ema_bf_res_1() {
         let settings = EMA::new(2);
-        test_bf_res_1(settings, &IN_, RES);
+        test_ind_bf_res_1(settings, &IN_, RES);
     }
 
     #[test]

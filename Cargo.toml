@@ -23,7 +23,6 @@ name = "avg"
 harness = false
 path = "benches/avg.rs"
 
-
  [[bench]]
 name = "div"
 harness = false
@@ -40,9 +39,9 @@ harness = false
 path = "benches/minus.rs"
 
  [[bench]]
-name = "mm_scaler"
+name = "MM_SCALLER"
 harness = false
-path = "benches/mm_scaler.rs"
+path = "benches/mm_scaller.rs"
 
  [[bench]]
 name = "mult"

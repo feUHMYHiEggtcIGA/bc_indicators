@@ -1,46 +1,17 @@
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq)]
-pub struct MINUS {
-    pub window: usize,
-    pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
-}
-
-impl MINUS {
-    pub fn new() -> Self {
-        Self {
-            window: 0,
-            mult_window_accuracy: 0,
-            add_window_accuracy: 0,
-        }
-    }
-}
-
-impl Default for MINUS {
-    fn default() -> Self {
-        MINUS::new()
-    }
-}
+#[derive(Debug, PartialEq, PartialOrd)]
+pub struct MINUS;
 
 impl Indicator for MINUS {
     fn w(&self) -> usize {
-        self.window * self.mult_window_accuracy + self.add_window_accuracy
+        0
     }
     fn ind(&self, math_operations: &[f64]) -> f64 {
         math_operations[0] - math_operations[1]
     }
-    fn bf<'a>(&self, _: &[Vec<f64>]) -> BF_INDICATOR<'a> {
-        Default::default()
-    }
-    fn ind_with_bf<'a>(
-        &self,
-        in_: &[f64],
-        _: &RefCell<Vec<MAP<&'a str, Vec<f64>>>>,
-        _: usize,
-    ) -> f64 {
-        self.ind(in_)
-    }
+    fn init_bf(&self, _in_: &[Vec<f64>]) {}
+    fn execute_bf(&self) {}
     fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
         self.ind(in_.last().expect("no elements in slice"))
     }
@@ -60,10 +31,9 @@ impl IndicatorExt for MINUS {
 
 #[cfg(test)]
 mod tests {
-    use std::sync::LazyLock;
-
-    use crate::minus::*;
+    use super::*;
     use crate::prelude_tests::prelude::*;
+    use std::sync::LazyLock;
 
     static RES: f64 = OPEN[OPEN.len() - 1] - CLOSE[OPEN.len() - 1];
     static IN_: LazyLock<Vec<Vec<f64>>> = LazyLock::new(|| {
@@ -74,25 +44,21 @@ mod tests {
 
     #[test]
     fn minus_bf_res_1() {
-        let settings = MINUS::new();
-        test_bf_res_1(settings, &IN_, RES);
+        test_ind_bf_res_1(MINUS, &IN_, RES);
     }
 
     #[test]
     fn minus_f_res_1() {
-        let settings = MINUS::new();
-        test_f_res_1(settings, &IN_, RES);
+        test_f_res_1(MINUS, &IN_, RES);
     }
 
     #[test]
     fn minus_coll_res_1() {
-        let settings = MINUS::new();
-        test_coll_res_1(settings, &IN_, RES, 21);
+        test_coll_res_1(MINUS, &IN_, RES, 21);
     }
 
     #[test]
     fn minus_coll_res_2() {
-        let settings = MINUS::new();
-        test_coll_res_2(settings, &IN_, 30);
+        test_coll_res_2(MINUS, &IN_, 30);
     }
 }
