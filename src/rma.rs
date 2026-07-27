@@ -9,7 +9,7 @@ pub struct RmaBf {
     pub res: f64,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct RmaParams {
     pub window: usize,
     pub mult_window_accuracy: usize,
@@ -33,7 +33,7 @@ impl RmaParams {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd, Default)]
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
 pub struct RMA {
     pub params: RmaParams,
     bf: RefCell<RmaBf>,
@@ -59,11 +59,10 @@ impl Indicator for RMA {
     }
     fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut res = 0.0;
-        let len = in_.len();
         let window_t = self.params.window as f64;
         let alpha = 1.0 / window_t;
 
-        for (i, el) in in_[len - self.params.window * self.params.mult_window_accuracy..]
+        for (i, el) in in_[in_.len() - (self.w() - 1)..]
             .iter()
             .map(|v| v[0])
             .enumerate()

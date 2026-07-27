@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct OSC_MULT {
     pub th_short: f64,
     pub th_long: f64,

@@ -3,7 +3,7 @@ use bc_utils::nums::dz;
 
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd, Default)]
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
 pub struct PROFIT_FACTOR;
 
 impl Indicator for PROFIT_FACTOR {

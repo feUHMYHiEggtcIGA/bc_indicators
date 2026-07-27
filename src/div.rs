@@ -2,7 +2,7 @@ use bc_utils::nums::dz;
 
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct DIV;
 
 impl Indicator for DIV {

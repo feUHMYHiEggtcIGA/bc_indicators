@@ -2,7 +2,7 @@ use bc_utils::nums::avg;
 
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct SmaParams {
     pub window: usize,
 }
@@ -27,7 +27,7 @@ pub struct SmaBf {
     src_l: Vec<f64>,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct SMA {
     pub params: SmaParams,
     bf: RefCell<SmaBf>,

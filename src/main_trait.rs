@@ -1,9 +1,5 @@
 #![allow(non_camel_case_types)]
 
-use std::cell::RefCell;
-
-use bc_utils_lg::types::maps::MAP;
-
 use std::any::Any;
 
 fn ind_coll<C, T>(indicator: &T, in_: &[Vec<f64>]) -> C

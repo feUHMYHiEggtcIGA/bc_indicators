@@ -6,7 +6,7 @@ pub struct RsiBf {
     pub src_l: f64,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct RsiParams {
     pub window: usize,
     pub mult_window_accuracy: usize,
@@ -32,7 +32,7 @@ impl RsiParams {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd, Default)]
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
 pub struct RSI {
     pub params: RsiParams,
     bf: RefCell<RsiBf>,

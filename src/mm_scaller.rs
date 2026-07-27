@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 use crate::prelude::*;
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct MmScallerParams {
     pub window: usize,
 }
@@ -26,7 +26,7 @@ pub struct MMScallerBf {
     src_l: Vec<f64>,
 }
 
-#[derive(Debug, PartialEq, PartialOrd, Default)]
+#[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
 pub struct MM_SCALLER {
     pub params: MmScallerParams,
     bf: RefCell<MMScallerBf>,
