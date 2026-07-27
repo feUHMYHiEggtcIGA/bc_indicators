@@ -2,6 +2,8 @@
 
 use std::any::Any;
 
+use dyn_clone::DynClone;
+
 fn ind_coll<C, T>(indicator: &T, in_: &[Vec<f64>]) -> C
 where
     C: FromIterator<f64>,
@@ -27,7 +29,7 @@ where
         .collect()
 }
 
-pub trait Indicator: Any {
+pub trait Indicator: Any + DynClone {
     fn w(&self) -> usize;
     fn init_bf(&self, in_: &[Vec<f64>]);
     fn execute_bf(&self);
@@ -44,6 +46,8 @@ pub trait Indicator: Any {
         ind_coll(self, in_)
     }
 }
+
+dyn_clone::clone_trait_object!(Indicator);
 
 pub trait IndicatorExt: Indicator {
     fn ind_coll<C>(&self, in_: &[Vec<f64>]) -> C
