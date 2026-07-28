@@ -50,10 +50,13 @@ fn ema(src: f64, res: f64, alpha: f64) -> f64 {
     src * alpha + res * (1.0 - alpha)
 }
 
-impl Indicator for EMA {
+impl W for EMA {
     fn w(&self) -> usize {
         self.params.window * self.params.mult_window_accuracy + 1
     }
+}
+
+impl Indicator for EMA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut res = 0.0;
         let len = in_.len();

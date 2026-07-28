@@ -6,10 +6,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Default, Clone)]
 pub struct PROFIT_FACTOR;
 
-impl Indicator for PROFIT_FACTOR {
+impl W for PROFIT_FACTOR {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for PROFIT_FACTOR {
     fn ind(&self, math_operations: &[f64]) -> f64 {
         let mut negative = 0.;
         let mut positive = 0.;

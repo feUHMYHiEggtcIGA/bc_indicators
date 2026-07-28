@@ -3,10 +3,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct PERCENT;
 
-impl Indicator for PERCENT {
+impl W for PERCENT {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for PERCENT {
     fn ind(&self, math_operations: &[f64]) -> f64 {
         (math_operations[0] - math_operations[1]) / math_operations[0]
     }

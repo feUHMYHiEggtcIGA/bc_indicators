@@ -46,10 +46,13 @@ fn mm_scaller(src: f64, min_: f64, max_: f64) -> f64 {
     (src - min_) / (max_ - min_)
 }
 
-impl Indicator for MM_SCALLER {
+impl W for MM_SCALLER {
     fn w(&self) -> usize {
         self.params.window + 1
     }
+}
+
+impl Indicator for MM_SCALLER {
     fn init_bf(&self, in_: &[Vec<f64>]) {
         self.bf.borrow_mut().src_l = in_[in_.len() - self.params.window..]
             .iter()

@@ -28,10 +28,13 @@ impl OSC_MULT {
     }
 }
 
-impl Indicator for OSC_MULT {
+impl W for OSC_MULT {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for OSC_MULT {
     fn ind(&self, in_: &[f64]) -> f64 {
         let diff: f64;
         let v2: f64;

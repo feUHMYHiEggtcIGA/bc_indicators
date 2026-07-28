@@ -1,12 +1,16 @@
+use bc_utils_lg::traits::w::W;
+
 use crate::prelude::*;
 
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct AVG;
 
-impl Indicator for AVG {
+impl W for AVG {
     fn w(&self) -> usize {
         0
     }
+}
+impl Indicator for AVG {
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
     fn ind(&self, in_: &[f64]) -> f64 {

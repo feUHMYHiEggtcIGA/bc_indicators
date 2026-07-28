@@ -63,21 +63,26 @@ impl TREND_MA {
     }
 }
 
-impl Indicator for TREND_MA {
+impl W for TREND_MA {
     fn w(&self) -> usize {
-        self.params.add_window_accuracy
+        // window 1, default addition 1
+        self.params.add_window_accuracy + 1 + 1
     }
+}
+
+impl Indicator for TREND_MA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
-        let src_l = in_[in_.len() - 2][0];
-        let src = in_[in_.len() - 1][0];
-        if src > src_l {
-            self.bf.borrow_mut().trend = self.params.trend_long;
-        } else if src < src_l {
-            self.bf.borrow_mut().trend = self.params.trend_short;
-        } else {
-            self.bf.borrow_mut().trend = 0.0;
+        for src in &in_[in_.len() - (self.w() - 1)..] {
+            let src = src[0];
+            if src > self.bf.borrow().src_l {
+                self.bf.borrow_mut().trend = self.params.trend_long;
+            } else if src < self.bf.borrow().src_l {
+                self.bf.borrow_mut().trend = self.params.trend_short;
+            } else {
+                self.bf.borrow_mut().trend = self.params.trend_hold;
+            }
+            self.bf.borrow_mut().src_l = src;
         }
-        self.bf.borrow_mut().src_l = src;
         *self.bf_state.borrow_mut() = self.bf.borrow().clone();
     }
     fn execute_bf(&self) {
@@ -107,7 +112,7 @@ mod tests {
 
     const RES: f64 = 1.0;
     static IN_: LazyLock<Vec<Vec<f64>>> =
-        LazyLock::new(|| (1..11).map(|v| vec![v as f64]).collect());
+        LazyLock::new(|| (1..13).map(|v| vec![v as f64]).collect());
 
     #[test]
     fn trend_ma_bf_res_1() {
@@ -124,12 +129,12 @@ mod tests {
     #[test]
     fn trend_ma_coll_res_1() {
         let settings = TREND_MA::default();
-        test_coll_res_1(settings, &IN_, RES, 10);
+        test_coll_res_1(settings, &IN_, RES, 12);
     }
 
     #[test]
     fn trend_ma_coll_res_2() {
         let settings = TREND_MA::default();
-        test_coll_res_2(settings, &IN_, 10);
+        test_coll_res_2(settings, &IN_, 12);
     }
 }

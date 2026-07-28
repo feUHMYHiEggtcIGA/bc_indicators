@@ -3,10 +3,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct MINUS;
 
-impl Indicator for MINUS {
+impl W for MINUS {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for MINUS {
     fn ind(&self, math_operations: &[f64]) -> f64 {
         math_operations[0] - math_operations[1]
     }

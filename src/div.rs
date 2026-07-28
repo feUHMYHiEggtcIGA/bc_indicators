@@ -5,10 +5,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct DIV;
 
-impl Indicator for DIV {
+impl W for DIV {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for DIV {
     fn ind(&self, in_: &[f64]) -> f64 {
         in_[0] / dz(in_[1])
     }

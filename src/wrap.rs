@@ -3,10 +3,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct WRAP;
 
-impl Indicator for WRAP {
+impl W for WRAP {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for WRAP {
     fn ind(&self, math_operations: &[f64]) -> f64 {
         math_operations[0]
     }

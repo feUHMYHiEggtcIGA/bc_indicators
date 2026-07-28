@@ -53,10 +53,13 @@ fn rma(src: f64, res: f64, alpha: f64) -> f64 {
     alpha * src + (1.0 - alpha) * res
 }
 
-impl Indicator for RMA {
+impl W for RMA {
     fn w(&self) -> usize {
         self.params.window * self.params.mult_window_accuracy + 1
     }
+}
+
+impl Indicator for RMA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut res = 0.0;
         let window_t = self.params.window as f64;

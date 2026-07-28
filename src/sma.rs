@@ -53,10 +53,13 @@ impl SMA {
     }
 }
 
-impl Indicator for SMA {
+impl W for SMA {
     fn w(&self) -> usize {
         self.params.window + 1
     }
+}
+
+impl Indicator for SMA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
         self.bf.borrow_mut().src_l = in_[in_.len() - self.params.window..]
             .iter()

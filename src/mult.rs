@@ -3,10 +3,13 @@ use crate::prelude::*;
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct MULT;
 
-impl Indicator for MULT {
+impl W for MULT {
     fn w(&self) -> usize {
         0
     }
+}
+
+impl Indicator for MULT {
     fn ind(&self, math_operations: &[f64]) -> f64 {
         math_operations[0] * math_operations[1]
     }

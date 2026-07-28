@@ -1,3 +1,5 @@
+use bc_utils_lg::traits::w::W;
+
 use crate::prelude::*;
 use crate::rma::RMA;
 
@@ -56,10 +58,13 @@ fn rsi(rma1: f64, rma2: f64) -> f64 {
     (100.0 - (100.0 / (1.0 + rma1 / rma2))) / 100.0
 }
 
-impl Indicator for RSI {
+impl W for RSI {
     fn w(&self) -> usize {
         self.params.window * self.params.mult_window_accuracy + self.params.add_window_accuracy
     }
+}
+
+impl Indicator for RSI {
     fn init_bf(&self, in_: &[Vec<f64>]) {
         let mut u = Vec::new();
         let mut d = Vec::new();

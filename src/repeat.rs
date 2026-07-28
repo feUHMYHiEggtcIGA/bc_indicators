@@ -5,6 +5,12 @@ pub struct REPEAT {
     pub value: f64,
 }
 
+impl W for REPEAT {
+    fn w(&self) -> usize {
+        0
+    }
+}
+
 impl REPEAT {
     pub fn new(value: f64) -> Self {
         Self { value }
@@ -12,9 +18,6 @@ impl REPEAT {
 }
 
 impl Indicator for REPEAT {
-    fn w(&self) -> usize {
-        0
-    }
     fn ind(&self, _: &[f64]) -> f64 {
         self.value
     }
