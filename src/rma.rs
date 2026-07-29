@@ -55,7 +55,7 @@ fn rma(src: f64, res: f64, alpha: f64) -> f64 {
 
 impl W for RMA {
     fn w(&self) -> usize {
-        self.params.window * self.params.mult_window_accuracy + 1
+        self.params.window * self.params.mult_window_accuracy
     }
 }
 
@@ -65,11 +65,7 @@ impl Indicator for RMA {
         let window_t = self.params.window as f64;
         let alpha = 1.0 / window_t;
 
-        for (i, el) in in_[in_.len() - (self.w() - 1)..]
-            .iter()
-            .map(|v| v[0])
-            .enumerate()
-        {
+        for (i, el) in in_[in_.len() - self.w()..].iter().map(|v| v[0]).enumerate() {
             if i < self.params.window {
                 res += el;
                 continue;
@@ -116,20 +112,8 @@ mod tests {
     }
 
     #[test]
-    fn rma_f_res_1() {
-        let settings = RMA::new(2);
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
     fn rma_coll_res_1() {
         let settings = RMA::new(2);
-        test_coll_res_1(settings, &IN_, RES, 21);
-    }
-
-    #[test]
-    fn rma_coll_res_2() {
-        let settings = RMA::new(2);
-        test_coll_res_2(settings, &IN_, 30);
+        test_coll_res_1(settings, &IN_, 10);
     }
 }

@@ -52,7 +52,7 @@ fn ema(src: f64, res: f64, alpha: f64) -> f64 {
 
 impl W for EMA {
     fn w(&self) -> usize {
-        self.params.window * self.params.mult_window_accuracy + 1
+        self.params.window * self.params.mult_window_accuracy
     }
 }
 
@@ -114,20 +114,8 @@ mod tests {
     }
 
     #[test]
-    fn ema_f_res_1() {
-        let settings = EMA::new(2);
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
     fn ema_coll_res_1() {
         let settings = EMA::new(2);
-        test_coll_res_1(settings, &IN_, RES, 21);
-    }
-
-    #[test]
-    fn ema_coll_res_2() {
-        let settings = EMA::new(2);
-        test_coll_res_2(settings, &IN_, 30);
+        test_coll_res_1(settings, &IN_, 10);
     }
 }

@@ -16,17 +16,5 @@ fn mm_scaller_bf_1(c: &mut Criterion) {
     c.bench_function("mm_scaller_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
-fn mm_scaller_f_1(c: &mut Criterion) {
-    let ind = MM_SCALLER::new(20);
-    c.bench_function("mm_scaller_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn mm_scaller_coll_1(c: &mut Criterion) {
-    let ind = MM_SCALLER::new(20);
-    c.bench_function("mm_scaller_coll_1", |b| {
-        b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
-    });
-}
-
-criterion_group!(benches, mm_scaller_bf_1, mm_scaller_f_1, mm_scaller_coll_1);
+criterion_group!(benches, mm_scaller_bf_1,);
 criterion_main!(benches);

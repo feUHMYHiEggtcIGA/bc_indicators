@@ -11,17 +11,5 @@ fn osc_mult_bf_1(c: &mut Criterion) {
     c.bench_function("osc_mult_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
-fn osc_mult_f_1(c: &mut Criterion) {
-    let ind = OSC_MULT::new(15.0, 15.0, 100.0);
-    c.bench_function("osc_mult_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn osc_mult_coll_1(c: &mut Criterion) {
-    let ind = OSC_MULT::new(15.0, 15.0, 100.0);
-    c.bench_function("osc_mult_coll_1", |b| {
-        b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
-    });
-}
-
-criterion_group!(benches, osc_mult_bf_1, osc_mult_f_1, osc_mult_coll_1);
+criterion_group!(benches, osc_mult_bf_1,);
 criterion_main!(benches);

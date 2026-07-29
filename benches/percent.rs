@@ -16,17 +16,5 @@ fn percent_bf_1(c: &mut Criterion) {
     });
 }
 
-fn percent_f_1(c: &mut Criterion) {
-    let ind = PERCENT;
-    c.bench_function("percent_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn percent_coll_1(c: &mut Criterion) {
-    let ind = PERCENT;
-    c.bench_function("percent_coll_1", |b| {
-        b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
-    });
-}
-
-criterion_group!(benches, percent_bf_1, percent_f_1, percent_coll_1);
+criterion_group!(benches, percent_bf_1,);
 criterion_main!(benches);

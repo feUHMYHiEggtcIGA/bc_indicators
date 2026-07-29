@@ -23,9 +23,6 @@ impl Indicator for REPEAT {
     }
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
-    fn ind_f(&self, _: &[Vec<f64>]) -> f64 {
-        self.value
-    }
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         (0..in_.len()).map(|_| self.value).collect()
     }
@@ -58,20 +55,5 @@ mod tests {
     #[test]
     fn repeat_bf_res_1() {
         test_ind_bf_res_1((*SETTINGS_).clone(), &IN_, RES);
-    }
-
-    #[test]
-    fn repeat_f_res_1() {
-        test_f_res_1((*SETTINGS_).clone(), &IN_, RES);
-    }
-
-    #[test]
-    fn repeat_coll_res_1() {
-        test_coll_res_1((*SETTINGS_).clone(), &IN_, RES, 21);
-    }
-
-    #[test]
-    fn repeat_coll_res_2() {
-        test_coll_res_2((*SETTINGS_).clone(), &IN_, 30);
     }
 }

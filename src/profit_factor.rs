@@ -34,9 +34,7 @@ impl Indicator for PROFIT_FACTOR {
     }
     fn init_bf(&self, _: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
-    fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
-        self.ind(in_.last().expect("no elements in slice"))
-    }
+
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         in_.iter().map(|x| self.ind(x)).collect()
     }
@@ -65,23 +63,5 @@ mod tests {
     fn profit_factor_bf_res_1() {
         let settings = PROFIT_FACTOR::default();
         test_ind_bf_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
-    fn profit_factor_f_res_1() {
-        let settings = PROFIT_FACTOR::default();
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
-    fn profit_factor_coll_res_1() {
-        let settings = PROFIT_FACTOR::default();
-        test_coll_res_1(settings, &IN_, RES, 3);
-    }
-
-    #[test]
-    fn profit_factor_coll_res_2() {
-        let settings = PROFIT_FACTOR::default();
-        test_coll_res_2(settings, &IN_, 3);
     }
 }

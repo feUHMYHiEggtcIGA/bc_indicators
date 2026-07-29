@@ -16,15 +16,5 @@ fn rsi_bf_1(c: &mut Criterion) {
     c.bench_function("rsi_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
-fn rsi_f_1(c: &mut Criterion) {
-    let ind = RSI::new(4);
-    c.bench_function("rsi_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn rsi_coll_1(c: &mut Criterion) {
-    let ind = RSI::new(4);
-    c.bench_function("rsi_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
-}
-
-criterion_group!(benches, rsi_bf_1, rsi_f_1, rsi_coll_1);
+criterion_group!(benches, rsi_bf_1,);
 criterion_main!(benches);

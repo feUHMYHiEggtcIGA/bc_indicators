@@ -16,9 +16,6 @@ impl Indicator for AVG {
     fn ind(&self, in_: &[f64]) -> f64 {
         in_.into_iter().sum::<f64>() / in_.len() as f64
     }
-    fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
-        self.ind(in_.last().expect("no elements in slice"))
-    }
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         in_.iter().map(|x| self.ind(x)).collect()
     }
@@ -55,17 +52,7 @@ mod tests {
     }
 
     #[test]
-    fn avg_f_res_1() {
-        test_f_res_1(AVG, &IN_, RES);
-    }
-
-    #[test]
     fn avg_coll_res_1() {
-        test_coll_res_1(AVG, &IN_, RES, 21);
-    }
-
-    #[test]
-    fn avg_coll_res_2() {
-        test_coll_res_2(AVG, &IN_, 30);
+        test_coll_res_1(AVG, &IN_, 10);
     }
 }

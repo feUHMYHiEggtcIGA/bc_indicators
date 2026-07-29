@@ -16,15 +16,5 @@ fn sma_bf_1(c: &mut Criterion) {
     c.bench_function("sma_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
-fn sma_f_1(c: &mut Criterion) {
-    let ind = SMA::new(20);
-    c.bench_function("sma_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn sma_coll_1(c: &mut Criterion) {
-    let ind = SMA::new(20);
-    c.bench_function("sma_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
-}
-
-criterion_group!(benches, sma_bf_1, sma_f_1, sma_coll_1);
+criterion_group!(benches, sma_bf_1,);
 criterion_main!(benches);

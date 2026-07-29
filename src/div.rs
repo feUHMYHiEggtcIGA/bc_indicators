@@ -17,9 +17,6 @@ impl Indicator for DIV {
     }
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
-    fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
-        self.ind(in_.last().expect("no elements in slice"))
-    }
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         in_.iter().map(|x| self.ind(x)).collect()
     }
@@ -53,17 +50,7 @@ mod tests {
     }
 
     #[test]
-    fn div_f_res_1() {
-        test_f_res_1(DIV, &IN_, RES);
-    }
-
-    #[test]
     fn div_coll_res_1() {
-        test_coll_res_1(DIV, &IN_, RES, 21);
-    }
-
-    #[test]
-    fn div_coll_res_2() {
-        test_coll_res_2(DIV, &IN_, 30);
+        test_coll_res_1(DIV, &IN_, 10);
     }
 }

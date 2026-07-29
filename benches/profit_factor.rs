@@ -11,22 +11,5 @@ fn profit_factor_bf_1(c: &mut Criterion) {
     c.bench_function("profit_factor_bf_1", |b| b.iter(|| ind.ind(&[OPEN_LAST])));
 }
 
-fn profit_factor_f_1(c: &mut Criterion) {
-    let ind = PROFIT_FACTOR;
-    c.bench_function("profit_factor_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn profit_factor_coll_1(c: &mut Criterion) {
-    let ind = PROFIT_FACTOR;
-    c.bench_function("profit_factor_coll_1", |b| {
-        b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
-    });
-}
-
-criterion_group!(
-    benches,
-    profit_factor_bf_1,
-    profit_factor_f_1,
-    profit_factor_coll_1
-);
+criterion_group!(benches, profit_factor_bf_1,);
 criterion_main!(benches);

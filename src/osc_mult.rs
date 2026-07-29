@@ -54,9 +54,7 @@ impl Indicator for OSC_MULT {
     }
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
-    fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
-        self.ind(in_.last().expect("no elements in slice"))
-    }
+
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         in_.iter().map(|x| self.ind(x)).collect()
     }
@@ -84,23 +82,5 @@ mod tests {
     fn osc_mult_bf_res_1() {
         let settings = OSC_MULT::new(30.0, 70.0, 100.0);
         test_ind_bf_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
-    fn osc_mult_f_res_1() {
-        let settings = OSC_MULT::new(30.0, 70.0, 100.0);
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
-    fn osc_mult_coll_res_1() {
-        let settings = OSC_MULT::new(30.0, 70.0, 100.0);
-        test_coll_res_1(settings, &IN_, RES, 2);
-    }
-
-    #[test]
-    fn osc_mult_coll_res_2() {
-        let settings = OSC_MULT::new(30.0, 70.0, 100.0);
-        test_coll_res_2(settings, &IN_, 2);
     }
 }

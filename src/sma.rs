@@ -55,13 +55,14 @@ impl SMA {
 
 impl W for SMA {
     fn w(&self) -> usize {
-        self.params.window + 1
+        self.params.window
     }
 }
 
 impl Indicator for SMA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
-        self.bf.borrow_mut().src_l = in_[in_.len() - self.params.window..]
+        dbg!(in_.len());
+        self.bf.borrow_mut().src_l = in_[in_.len() - self.w()..]
             .iter()
             .map(|v| v[0])
             .collect::<Vec<f64>>();
@@ -105,20 +106,8 @@ mod tests {
     }
 
     #[test]
-    fn sma_f_res_1() {
-        let settings = SMA::new(10);
-        test_f_res_1(settings, &IN_, *RES);
-    }
-
-    #[test]
     fn sma_coll_res_1() {
         let settings = SMA::new(10);
-        test_coll_res_1(settings, &IN_, *RES, 21);
-    }
-
-    #[test]
-    fn sma_coll_res_2() {
-        let settings = SMA::new(10);
-        test_coll_res_2(settings, &IN_, 30);
+        test_coll_res_1(settings, &IN_, 10);
     }
 }

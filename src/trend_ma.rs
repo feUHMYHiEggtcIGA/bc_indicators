@@ -65,7 +65,7 @@ impl TREND_MA {
 
 impl W for TREND_MA {
     fn w(&self) -> usize {
-        // window 1, default addition 1
+        // window 1
         self.params.add_window_accuracy + 1 + 1
     }
 }
@@ -112,7 +112,7 @@ mod tests {
 
     const RES: f64 = 1.0;
     static IN_: LazyLock<Vec<Vec<f64>>> =
-        LazyLock::new(|| (1..13).map(|v| vec![v as f64]).collect());
+        LazyLock::new(|| (1..14).map(|v| vec![v as f64]).collect());
 
     #[test]
     fn trend_ma_bf_res_1() {
@@ -121,20 +121,8 @@ mod tests {
     }
 
     #[test]
-    fn trend_ma_f_res_1() {
-        let settings = TREND_MA::default();
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
     fn trend_ma_coll_res_1() {
         let settings = TREND_MA::default();
-        test_coll_res_1(settings, &IN_, RES, 12);
-    }
-
-    #[test]
-    fn trend_ma_coll_res_2() {
-        let settings = TREND_MA::default();
-        test_coll_res_2(settings, &IN_, 12);
+        test_coll_res_1(settings, &IN_, 1);
     }
 }

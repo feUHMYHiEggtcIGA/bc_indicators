@@ -12,7 +12,6 @@ pub struct RsiBf {
 pub struct RsiParams {
     pub window: usize,
     pub mult_window_accuracy: usize,
-    pub add_window_accuracy: usize,
 }
 
 impl Default for RsiParams {
@@ -20,7 +19,6 @@ impl Default for RsiParams {
         Self {
             window: 14,
             mult_window_accuracy: 10,
-            add_window_accuracy: 2,
         }
     }
 }
@@ -60,7 +58,8 @@ fn rsi(rma1: f64, rma2: f64) -> f64 {
 
 impl W for RSI {
     fn w(&self) -> usize {
-        self.params.window * self.params.mult_window_accuracy + self.params.add_window_accuracy
+        // 1 for rma
+        self.params.window * self.params.mult_window_accuracy + 1
     }
 }
 
@@ -70,9 +69,8 @@ impl Indicator for RSI {
         let mut d = Vec::new();
         let mut src_l = f64::NAN;
         let len_src = in_.len();
-        let _w = self.w() - 1;
 
-        for (i, el) in in_[len_src - _w..].iter().map(|v| v[0]).enumerate() {
+        for (i, el) in in_[len_src - self.w()..].iter().map(|v| v[0]).enumerate() {
             if i == 0 {
                 src_l = el;
                 continue;
@@ -128,20 +126,8 @@ mod tests {
     }
 
     #[test]
-    fn rsi_f_res_1() {
-        let settings = RSI::new(2);
-        test_f_res_1(settings, &IN_, RES);
-    }
-
-    #[test]
     fn rsi_coll_res_1() {
         let settings = RSI::new(2);
-        test_coll_res_1(settings, &IN_, RES, 22);
-    }
-
-    #[test]
-    fn rsi_coll_res_2() {
-        let settings = RSI::new(2);
-        test_coll_res_2(settings, &IN_, 30);
+        test_coll_res_1(settings, &IN_, 10);
     }
 }

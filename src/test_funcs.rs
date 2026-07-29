@@ -1,57 +1,47 @@
 #[cfg(test)]
 pub mod test_funcs {
 
-    use bc_utils::nums::round_f;
     use pretty_assertions::assert_eq as assert_eq_pr;
 
     use crate::prelude::*;
 
-    pub fn test_ind_bf_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
+    pub fn test_ind_bf_res_1<T>(ind: T, src: &[Vec<f64>], eq: f64)
     where
         T: Indicator,
         T: IndicatorExt,
     {
-        settings_indicator.init_bf(
-            in_.into_iter()
+        ind.init_bf(
+            &src.into_iter()
                 .cloned()
-                .take(in_.len() - 1)
-                .collect::<Vec<Vec<f64>>>()
-                .as_slice(),
+                .take(src.len() - 1)
+                .collect::<Vec<Vec<f64>>>(),
         );
-        assert_eq_pr!(settings_indicator.ind(in_.last().unwrap(),), eq,);
+        assert_eq_pr!(ind.ind(src.last().unwrap(),), eq,);
     }
-
-    pub fn test_f_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64)
+    pub fn test_coll_res_1<T>(ind: T, src: &[Vec<f64>], interval_len: usize)
     where
-        T: Indicator,
+        T: Indicator + Clone,
         T: IndicatorExt,
     {
-        assert_eq_pr!(settings_indicator.ind_f(in_), eq,);
-    }
-
-    pub fn test_coll_res_1<T>(settings_indicator: T, in_: &[Vec<f64>], eq: f64, len_elements: usize)
-    where
-        T: Indicator,
-        T: IndicatorExt,
-    {
+        let ind2 = ind.clone();
+        for el in [&ind, &ind2] {
+            el.init_bf(
+                src.into_iter()
+                    .cloned()
+                    .take(src.len() - 1 - interval_len)
+                    .collect::<Vec<Vec<f64>>>()
+                    .as_slice(),
+            );
+        }
+        for el in &src[src.len() - interval_len..src.len() - 1] {
+            ind2.ind(el);
+            ind2.execute_bf();
+        }
         assert_eq_pr!(
-            dbg!(settings_indicator.ind_coll::<Vec<_>>(&in_[dbg!(in_.len() - len_elements)..]))
-                [len_elements - 1],
-            eq,
-        );
-    }
-
-    pub fn test_coll_res_2<T>(settings_indicator: T, in_: &[Vec<f64>], len_elements: usize)
-    where
-        T: IndicatorExt,
-    {
-        let in_ = &in_[in_.len() - len_elements..];
-        assert_eq_pr!(
-            round_f(
-                settings_indicator.ind_coll::<Vec<_>>(in_)[len_elements - 1],
-                &4
-            ),
-            round_f(settings_indicator.ind_f(in_), &4),
+            *ind.ind_vec(&src[src.len() - interval_len..])
+                .last()
+                .unwrap(),
+            ind2.ind(&src[src.len() - 1]),
         );
     }
 }

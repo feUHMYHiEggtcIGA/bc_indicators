@@ -17,15 +17,5 @@ fn wrap_bf_1(c: &mut Criterion) {
     });
 }
 
-fn wrap_f_1(c: &mut Criterion) {
-    let ind = WRAP;
-    c.bench_function("wrap_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn wrap_coll_1(c: &mut Criterion) {
-    let ind = WRAP;
-    c.bench_function("wrap_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
-}
-
-criterion_group!(benches, wrap_bf_1, wrap_f_1, wrap_coll_1);
+criterion_group!(benches, wrap_bf_1,);
 criterion_main!(benches);

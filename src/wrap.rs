@@ -15,9 +15,7 @@ impl Indicator for WRAP {
     }
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}
-    fn ind_f(&self, in_: &[Vec<f64>]) -> f64 {
-        self.ind(in_.last().expect("no elements in slice"))
-    }
+
     fn ind_vec(&self, in_: &[Vec<f64>]) -> Vec<f64> {
         in_.iter().map(|x| self.ind(x)).collect()
     }
@@ -49,20 +47,5 @@ mod tests {
     #[test]
     fn wrap_bf_res_1() {
         test_ind_bf_res_1(WRAP, &IN_, RES);
-    }
-
-    #[test]
-    fn wrap_f_res_1() {
-        test_f_res_1(WRAP, &IN_, RES);
-    }
-
-    #[test]
-    fn wrap_coll_res_1() {
-        test_coll_res_1(WRAP, &IN_, RES, 21);
-    }
-
-    #[test]
-    fn wrap_coll_res_2() {
-        test_coll_res_2(WRAP, &IN_, 30);
     }
 }

@@ -17,17 +17,5 @@ fn repeat_bf_1(c: &mut Criterion) {
     });
 }
 
-fn repeat_f_1(c: &mut Criterion) {
-    let ind = REPEAT::new(1.0);
-    c.bench_function("repeat_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn repeat_coll_1(c: &mut Criterion) {
-    let ind = REPEAT::new(1.0);
-    c.bench_function("repeat_coll_1", |b| {
-        b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_))
-    });
-}
-
-criterion_group!(benches, repeat_bf_1, repeat_f_1, repeat_coll_1);
+criterion_group!(benches, repeat_bf_1,);
 criterion_main!(benches);

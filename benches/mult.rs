@@ -17,15 +17,5 @@ fn mult_bf_1(c: &mut Criterion) {
     });
 }
 
-fn mult_f_1(c: &mut Criterion) {
-    let ind = MULT;
-    c.bench_function("mult_f_1", |b| b.iter(|| ind.ind_f(&IN_)));
-}
-
-fn mult_coll_1(c: &mut Criterion) {
-    let ind = MULT;
-    c.bench_function("mult_coll_1", |b| b.iter(|| ind.ind_coll::<Vec<f64>>(&IN_)));
-}
-
-criterion_group!(benches, mult_bf_1, mult_f_1, mult_coll_1);
+criterion_group!(benches, mult_bf_1,);
 criterion_main!(benches);
