@@ -11,7 +11,7 @@ impl W for PERCENT {
 
 impl Indicator for PERCENT {
     fn ind(&self, math_operations: &[f64]) -> f64 {
-        (math_operations[0] - math_operations[1]) / math_operations[0]
+        (math_operations[0] - math_operations[1]) / math_operations[1]
     }
     fn init_bf(&self, _in_: &[Vec<f64>]) {}
     fn execute_bf(&self) {}

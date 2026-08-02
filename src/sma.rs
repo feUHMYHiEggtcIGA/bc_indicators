@@ -61,7 +61,6 @@ impl W for SMA {
 
 impl Indicator for SMA {
     fn init_bf(&self, in_: &[Vec<f64>]) {
-        dbg!(in_.len());
         self.bf.borrow_mut().src_l = in_[in_.len() - self.w()..]
             .iter()
             .map(|v| v[0])
